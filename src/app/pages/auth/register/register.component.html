@@ -1,1 +1,249 @@
-<p>register works!</p>
+<div class="container" fxLayout="row" fxLayoutAlign="center">
+  <mat-card fxFlex="80">
+    <mat-card-title>借借露註冊</mat-card-title>
+
+    <mat-card-content>
+      <form class="register-form" [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div fxLayout="row" fxLayout.xs="column" fxFlexFill>
+          <div fxLayout="column" fxFlex="50">
+            <mat-form-field
+              class="mat-form-field-round"
+              appearance="outline"
+              floatLabel="never"
+            >
+              <mat-icon matPrefix>person</mat-icon>
+              <input
+                matInput
+                type="text"
+                placeholder="帳號"
+                formControlName="account"
+              />
+              <mat-error>此欄位為必填</mat-error>
+            </mat-form-field>
+
+            <mat-form-field
+              class="mat-form-field-round"
+              appearance="outline"
+              floatLabel="never"
+            >
+              <mat-icon matPrefix>lock</mat-icon>
+              <input
+                matInput
+                [type]="isHide ? 'password' : 'text'"
+                placeholder="密碼"
+                formControlName="password"
+              />
+              <mat-icon matSuffix (click)="isHide = !isHide">
+                {{ isHide ? "visibility" : "visibility_off" }}
+              </mat-icon>
+              <mat-error>此欄位為必填</mat-error>
+            </mat-form-field>
+
+            <mat-form-field
+              class="mat-form-field-round"
+              appearance="outline"
+              floatLabel="never"
+            >
+              <mat-icon matPrefix>lock</mat-icon>
+              <input
+                matInput
+                [type]="isHide ? 'password' : 'text'"
+                placeholder="確認密碼"
+                formControlName="confirmPassword"
+              />
+              <mat-icon matSuffix (click)="isHide = !isHide">
+                {{ isHide ? "visibility" : "visibility_off" }}
+              </mat-icon>
+              <mat-error>此欄位為必填</mat-error>
+            </mat-form-field>
+
+            <!-- 聯絡方式 -->
+            <div fxLayout="column">
+              <span class="subtitle">填寫聯絡方式</span>
+              <mat-form-field
+                class="mat-form-field-round"
+                appearance="outline"
+                floatLabel="never"
+              >
+                <mat-icon matPrefix>email</mat-icon>
+                <input
+                  matInput
+                  type="email"
+                  placeholder="電子郵件"
+                  formControlName="email"
+                />
+                <mat-error>此欄位為必填</mat-error>
+              </mat-form-field>
+
+              <mat-form-field
+                class="mat-form-field-round"
+                appearance="outline"
+                floatLabel="never"
+              >
+                <mat-icon matPrefix>smartphone</mat-icon>
+                <input
+                  matInput
+                  type="tel"
+                  placeholder="手機號碼"
+                  formControlName="cellPhone"
+                />
+                <mat-error>此欄位為必填</mat-error>
+              </mat-form-field>
+
+              <mat-form-field
+                class="mat-form-field-round"
+                appearance="outline"
+                floatLabel="never"
+              >
+                <mat-icon matPrefix>room</mat-icon>
+                <input
+                  matInput
+                  type="text"
+                  placeholder="地址"
+                  formControlName="address"
+                />
+                <mat-error>此欄位為必填</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div fxLayout="column" fxFlex="50">
+            <span class="subtitle">填寫基本資料</span>
+            <mat-form-field
+              class="mat-form-field-round"
+              appearance="outline"
+              floatLabel="never"
+            >
+              <mat-icon matPrefix>person</mat-icon>
+              <input
+                matInput
+                type="text"
+                placeholder="姓氏"
+                formControlName="lastName"
+              />
+              <mat-error>此欄位為必填</mat-error>
+            </mat-form-field>
+
+            <mat-form-field
+              class="mat-form-field-round"
+              floatLabel="never"
+              appearance="outline"
+            >
+              <mat-icon matPrefix>person</mat-icon>
+              <input
+                matInput
+                type="text"
+                placeholder="名字"
+                formControlName="firstName"
+              />
+              <mat-error>此欄位為必填</mat-error>
+            </mat-form-field>
+
+            <mat-form-field
+              class="mat-form-field-round"
+              floatLabel="never"
+              appearance="outline"
+            >
+              <mat-icon matPrefix>sentiment_very_satisfied</mat-icon>
+              <input
+                matInput
+                type="text"
+                placeholder="暱稱"
+                formControlName="nickName"
+              />
+              <mat-error>此欄位為必填</mat-error>
+            </mat-form-field>
+
+            <div class="radio-form-field" fxLayoutAlign="left">
+              <mat-icon matPrefix>wc</mat-icon>
+              <label fxHide.lt-lg>性別</label>
+              <mat-radio-group formControlName="gender">
+                <mat-radio-button value="0">男</mat-radio-button>
+                <mat-radio-button value="1">女</mat-radio-button>
+                <mat-radio-button value="2">未提供</mat-radio-button>
+              </mat-radio-group>
+            </div>
+            <div class="radio-form-field-error">
+              <mat-error>此欄位為必填</mat-error>
+            </div>
+
+            <mat-form-field
+              class="mat-form-field-round date-picker-form-field"
+              appearance="outline"
+              floatLabel="never"
+              (click)="picker.opened = true"
+            >
+              <input
+                matInput
+                [matDatepicker]="picker"
+                placeholder="生日"
+                formControlName="birthday"
+              />
+              <mat-datepicker-toggle
+                matPrefix
+                [for]="picker"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #picker disabled="false"></mat-datepicker>
+              <mat-error>此欄位為必填</mat-error>
+            </mat-form-field>
+
+            <mat-form-field
+              class="mat-form-field-round select-form-field"
+              appearance="outline"
+              floatLabel="never"
+            >
+              <mat-icon matPrefix>details</mat-icon>
+              <mat-select formControlName="experience" placeholder="經驗">
+                <mat-option
+                  *ngFor="let experience of experiences"
+                  [value]="experience.id"
+                >
+                  {{ experience.display }}
+                </mat-option>
+              </mat-select>
+              <mat-error>此欄位為必填</mat-error>
+            </mat-form-field>
+
+            <mat-form-field
+              class="mat-form-field-round"
+              floatLabel="never"
+              appearance="outline"
+            >
+              <mat-icon matPrefix>work_outline</mat-icon>
+              <input
+                matInput
+                type="text"
+                placeholder="銀行帳號"
+                formControlName="bankAccount"
+              />
+              <mat-error>此欄位為必填</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-around">
+          <button
+            mat-button
+            type="button"
+            routerLink="/auth/login"
+            fxFlex="40"
+            fxFlex.lt-sm="100"
+          >
+            已有帳號，直接登入
+          </button>
+
+          <button
+            mat-button
+            class="register"
+            type="submit"
+            [disabled]="!form.valid"
+            fxFlex="40"
+            fxFlex.lt-sm="100"
+          >
+            註冊
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

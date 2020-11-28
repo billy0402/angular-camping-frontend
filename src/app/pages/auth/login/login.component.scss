@@ -1,0 +1,70 @@
+@import "~src/assets/scss/color.scss";
+
+$primary-color: map-get($colors, primary1);
+$font-white: map-get($colors, white);
+$button-color: map-get($colors, primary1);
+$disabled-color: map-get($colors, lightgray);
+
+.container {
+  margin: 5% 0;
+}
+
+mat-card {
+  color: $primary-color;
+  border-style: solid;
+  border-radius: 20px;
+
+  &:not([class*="mat-elevation-z"]) {
+    box-shadow: none;
+  }
+
+  & > :first-child {
+    margin: 5% 0;
+  }
+}
+
+mat-card-title {
+  .logo {
+    height: 50px;
+    width: 50px;
+  }
+
+  .brand {
+    font-weight: normal;
+  }
+}
+
+mat-card-content {
+  .user-form {
+    margin: 5% 7%;
+
+    ::ng-deep mat-checkbox {
+      &.mat-checkbox-checked {
+        .mat-checkbox-background {
+          background-color: $primary-color;
+        }
+      }
+    }
+
+    .forget-password {
+      text-decoration: underline;
+    }
+
+    button {
+      margin: 2% 0;
+      border-style: solid;
+      border-radius: 20px;
+    }
+
+    .login {
+      color: $font-white;
+      background-color: $button-color;
+      border-color: $button-color;
+
+      &:disabled {
+        background-color: $disabled-color;
+        border-color: $disabled-color;
+      }
+    }
+  }
+}

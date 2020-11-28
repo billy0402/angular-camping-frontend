@@ -1,0 +1,134 @@
+@import "~src/assets/scss/color.scss";
+
+$primary-color: map-get($colors, primary1);
+$font-white: map-get($colors, white);
+$font-gray: map-get($colors, gray);
+$button-color: map-get($colors, primary1);
+$field-color: map-get($colors, primary4);
+$icon-color: map-get($colors, primary2);
+$disabled-color: map-get($colors, lightgray);
+
+.container {
+  margin: 3% 0;
+}
+
+mat-card {
+  color: $primary-color;
+  border-style: solid;
+  border-radius: 20px;
+
+  &:not([class*="mat-elevation-z"]) {
+    box-shadow: none;
+  }
+
+  & > :first-child {
+    margin: 3% 0;
+  }
+}
+
+mat-card-title {
+  font-size: 20px;
+  text-align: center;
+}
+
+mat-card-content {
+  .register-form {
+    padding: 0 5% 3%;
+
+    .subtitle {
+      text-align: left;
+      margin: 15px 25px;
+      color: $font-gray;
+    }
+
+    ::ng-deep mat-radio-button {
+      &.mat-radio-checked {
+        .mat-radio-outer-circle {
+          border-color: $primary-color;
+        }
+
+        .mat-radio-inner-circle {
+          background-color: $primary-color;
+        }
+      }
+    }
+
+    // gender
+    .radio-form-field {
+      margin: 0 10px;
+      padding: 1rem 12px;
+      color: $disabled-color;
+      border: 2px solid $field-color;
+      border-radius: 50px;
+
+      .mat-icon {
+        margin-right: 0.5rem;
+        color: $icon-color;
+      }
+
+      label {
+        margin-right: 5px;
+      }
+
+      .mat-radio-button ~ .mat-radio-button {
+        margin-left: 8px;
+      }
+    }
+
+    .radio-form-field-error {
+      margin: 0.6666666667em 10px 0;
+      padding-left: 1em;
+      font-size: 75%;
+    }
+
+    // birthday
+    .date-picker-form-field {
+      ::ng-deep .mat-icon-button {
+        width: 24px;
+        height: 24px;
+        color: $icon-color;
+      }
+    }
+
+    // experience
+    .select-form-field {
+      ::ng-deep .mat-select-arrow {
+        margin-top: 10px;
+      }
+    }
+
+    button {
+      margin: 2% 0;
+      padding: 7px 0;
+      border-style: solid;
+      border-radius: 30px;
+    }
+
+    .register {
+      color: $font-white;
+      background-color: $button-color;
+      border-color: $button-color;
+
+      &:disabled {
+        background-color: $disabled-color;
+        border-color: $disabled-color;
+      }
+    }
+  }
+}
+
+:host ::ng-deep .mat-form-field.mat-form-field-round {
+  padding: 0 10px;
+
+  .mat-icon {
+    color: $icon-color;
+  }
+
+  .mat-form-field-wrapper {
+    .mat-form-field-flex {
+      .mat-form-field-outline {
+        border: 2px solid $field-color;
+      }
+    }
+  }
+}
