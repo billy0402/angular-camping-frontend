@@ -1,0 +1,12 @@
+@import "~src/assets/scss/color.scss";
+@import "~src/assets/scss/mat-dialog.scss";
+
+$primary-color: map-get($colors, primary4);
+
+.mat-dialog-title {
+  background-color: $primary-color;
+
+  &::after {
+    border-top: solid 1rem $primary-color;
+  }
+}

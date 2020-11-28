@@ -1,1 +1,132 @@
-<p>top-bar works!</p>
+<div class="container" fxLayout="row" fxLayoutAlign="center">
+  <mat-toolbar color="primary" fxFlex="90" fxFlex.lt-md="100">
+    <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+      <div fxLayout="row">
+        <button mat-icon-button (click)="sidenav.toggle()" fxHide.gt-sm>
+          <mat-icon>menu</mat-icon>
+        </button>
+        <a class="brand" href="/" fxLayout="row" fxLayoutGap="10px">
+          <img class="logo" alt="logo" src="assets/image/logo.png" />
+          <span>借借露</span>
+        </a>
+      </div>
+
+      <div fxHide.lt-md>
+        <!-- The following menu items will be hidden on both SM and XS screen sizes -->
+        <button mat-button class="web-nav-item" routerLink="/product">
+          商品列表
+        </button>
+        <button mat-button class="web-nav-item" routerLink="/borrow">
+          租借紀錄
+        </button>
+        <button mat-button class="web-nav-item" routerLink="/faq">
+          常見問題
+        </button>
+        <button
+          mat-button
+          class="web-nav-item user"
+          *ngIf="isAuth$ | async; else login"
+          [matMenuTriggerFor]="userMenu"
+        >
+          <mat-icon>person</mat-icon>
+          {{ account$ | async }}
+        </button>
+        <ng-template #login>
+          <button mat-button class="web-nav-item" routerLink="/auth/login">
+            登入
+          </button>
+        </ng-template>
+        <button
+          mat-icon-button
+          class="web-nav-item"
+          *ngIf="isAuth$ | async"
+          [matMenuTriggerFor]="notificationMenu"
+        >
+          <mat-icon
+            [matBadge]="notReadCount.toString()"
+            matBadgeColor="warn"
+            [matBadgeHidden]="notReadCount <= 0"
+          >
+            notifications
+          </mat-icon>
+        </button>
+      </div>
+    </mat-toolbar-row>
+  </mat-toolbar>
+</div>
+
+<mat-sidenav-container>
+  <mat-sidenav #sidenav>
+    <mat-nav-list>
+      <a mat-list-item routerLink="/product">商品列表</a>
+      <a mat-list-item routerLink="/borrow">租借紀錄</a>
+      <a mat-list-item routerLink="/faq">常見問題</a>
+      <a
+        mat-list-item
+        *ngIf="isAuth$ | async; else login"
+        [matMenuTriggerFor]="userMenu"
+      >
+        <mat-icon>person</mat-icon>
+        {{ account$ | async }}
+      </a>
+      <ng-template #login>
+        <a mat-list-item routerLink="/auth/login">登入</a>
+      </ng-template>
+      <a
+        mat-list-item
+        *ngIf="isAuth$ | async"
+        [matMenuTriggerFor]="notificationMenu"
+      >
+        <mat-icon
+          [matBadge]="notReadCount.toString()"
+          matBadgeColor="warn"
+          [matBadgeHidden]="notReadCount <= 0"
+        >
+          notifications
+        </mat-icon>
+        通知
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <img class="banner" alt="banner" [src]="getBannerImage()" />
+    <mat-spinner [diameter]="50" *ngIf="showSpinner$ | async"></mat-spinner>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+<mat-menu #userMenu="matMenu">
+  <button mat-menu-item routerLink="/user">
+    <span>個人資訊</span>
+  </button>
+  <button mat-menu-item routerLink="/user/product">
+    <span>我的商品</span>
+  </button>
+  <button mat-menu-item class="logout" routerLink="/auth/logout">
+    <span>登出</span>
+  </button>
+</mat-menu>
+
+<mat-menu #notificationMenu="matMenu">
+  <div *ngIf="notifications.length > 0; else emptyNotification">
+    <button
+      mat-menu-item
+      *ngFor="let notification of notifications; index as index"
+    >
+      <span
+        matBadge="0"
+        matBadgeColor="warn"
+        [matBadgeHidden]="index > notReadCount - 1"
+        matBadgePosition="before"
+        matBadgeSize="small"
+      >
+        {{ notification.sendDate }}
+        {{ notification.content }}
+      </span>
+    </button>
+  </div>
+  <ng-template #emptyNotification>
+    <div mat-menu-item>沒有通知</div>
+  </ng-template>
+</mat-menu>

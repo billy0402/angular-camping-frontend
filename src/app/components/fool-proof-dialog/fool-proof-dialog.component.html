@@ -1,1 +1,18 @@
-<p>fool-proof-dialog works!</p>
+<h2
+  mat-dialog-title
+  fxLayout="column"
+  fxLayoutAlign="center center"
+  fxLayoutGap="10px"
+>
+  <mat-icon>{{ data.icon }}</mat-icon>
+  <span>{{ data.title }}</span>
+</h2>
+
+<mat-dialog-actions align="center">
+  <button mat-flat-button type="button" color="warn" (click)="onCancel()">
+    取消
+  </button>
+  <button mat-flat-button type="submit" color="accent" (click)="onSubmit()">
+    確認
+  </button>
+</mat-dialog-actions>

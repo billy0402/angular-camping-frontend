@@ -1,0 +1,66 @@
+@import "~src/assets/scss/color.scss";
+
+$primary-color: map-get($colors, primary1);
+$font-white: map-get($colors, white);
+$font-red: map-get($colors, red);
+$bg-white: map-get($colors, white);
+
+.container {
+  background-color: $primary-color;
+}
+
+mat-toolbar {
+  // text color
+  mat-icon,
+  a,
+  button {
+    color: $font-white;
+  }
+
+  .brand {
+    line-height: 40px;
+    font-weight: bold;
+    text-decoration: none;
+
+    .logo {
+      width: 40px;
+      height: 40px;
+    }
+  }
+
+  .web-nav-item {
+    &.user {
+      border: 1px solid $bg-white;
+    }
+
+    button:hover {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
+.logout {
+  color: $font-red;
+}
+
+mat-sidenav-container {
+  height: calc(100% - 64px);
+  background-color: $bg-white;
+}
+
+::ng-deep .mat-menu-panel {
+  max-width: 100% !important;
+
+  .mat-badge-content {
+    color: transparent;
+  }
+}
+
+.banner {
+  width: 100%;
+  max-height: 280px;
+}
+
+mat-spinner {
+  margin: 0 auto;
+}

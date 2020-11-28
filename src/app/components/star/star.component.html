@@ -1,1 +1,16 @@
-<p>star works!</p>
+<div *ngIf="comment; else emptyComment">
+  <span *ngFor="let i of starFill(comment)">
+    <mat-icon>star</mat-icon>
+  </span>
+  <mat-icon *ngIf="starHalf(comment)">star_half</mat-icon>
+  <span *ngFor="let i of starEmpty(comment)">
+    <mat-icon>star_outline</mat-icon>
+  </span>
+</div>
+
+<ng-template #emptyComment>
+  <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
+    <mat-icon>star_outline</mat-icon>
+    <span>尚未評分</span>
+  </div>
+</ng-template>

@@ -1,0 +1,7 @@
+@import "~src/assets/scss/color.scss";
+
+$icon-color: map-get($colors, primary4);
+
+mat-icon {
+  color: $icon-color;
+}

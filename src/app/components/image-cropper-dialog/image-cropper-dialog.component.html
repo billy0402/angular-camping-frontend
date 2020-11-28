@@ -1,1 +1,42 @@
-<p>image-cropper-dialog works!</p>
+<h2
+  mat-dialog-title
+  fxLayout="column"
+  fxLayoutAlign="center center"
+  fxLayoutGap="10px"
+>
+  <mat-icon>crop</mat-icon>
+  <span>圖片裁切</span>
+</h2>
+
+<mat-dialog-content>
+  <input type="file" (change)="fileChangeEvent($event)" />
+  <image-cropper
+    [imageBase64]="data.image"
+    [imageChangedEvent]="imageChangedEvent"
+    [maintainAspectRatio]="true"
+    [aspectRatio]="1.5"
+    [resizeToWidth]="300"
+    [resizeToHeight]="200"
+    [onlyScaleDown]="false"
+    format="jpeg"
+    (imageCropped)="imageCropped($event)"
+    (imageLoaded)="imageLoaded()"
+    (cropperReady)="cropperReady()"
+    (loadImageFailed)="loadImageFailed()"
+  ></image-cropper>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+  <button mat-flat-button mat-dialog-close type="button" color="warn">
+    取消
+  </button>
+  <button
+    mat-flat-button
+    type="submit"
+    color="accent"
+    [disabled]="!croppedImage"
+    (click)="onSubmit()"
+  >
+    完成
+  </button>
+</mat-dialog-actions>
