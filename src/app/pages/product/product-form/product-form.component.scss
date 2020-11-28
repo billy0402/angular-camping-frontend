@@ -1,0 +1,59 @@
+@import "~src/assets/scss/color.scss";
+
+$primary-color: map-get($colors, primary4);
+$icon-color: map-get($colors, primary2);
+$font-white: map-get($colors, white);
+
+.container {
+  margin: 3% 0;
+}
+
+mat-card {
+  padding: 3% 5%;
+  color: $primary-color;
+  border-style: solid;
+  border-radius: 20px;
+
+  &:not([class*="mat-elevation-z"]) {
+    box-shadow: none;
+  }
+}
+
+:host ::ng-deep mat-form-field {
+  mat-icon {
+    margin-right: 10px;
+    color: $icon-color;
+  }
+
+  .mat-form-field-infix {
+    margin: auto 0;
+    border: none;
+  }
+
+  .mat-date-range-input-inner {
+    color: map-get($colors, black);
+  }
+}
+
+.date-picker-form-field {
+  ::ng-deep {
+    .mat-icon-button {
+      width: 24px;
+      height: 24px;
+      margin-right: 10px;
+      color: $icon-color;
+      font-size: 24px !important;
+    }
+  }
+}
+
+.cover {
+  width: 300px;
+  height: 200px;
+  margin: 0 auto;
+  border: solid 1px $primary-color;
+}
+
+app-product-expansion-panel {
+  padding-bottom: 30px;
+}

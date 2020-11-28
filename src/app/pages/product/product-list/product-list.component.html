@@ -1,1 +1,94 @@
-<p>product-list works!</p>
+<div *ngIf="productGroups.length > 0; else emptyProductGroups">
+  <div class="product" fxLayout="row wrap" fxLayoutAlign="space-between">
+    <div
+      fxFlex.gt-xs="32"
+      *ngFor="
+        let productGroup of productGroups
+          | paginate: { itemsPerPage: 10, currentPage: page }
+      "
+    >
+      <mat-card>
+        <img
+          mat-card-image
+          alt="cover"
+          [src]="
+            productGroup.coverImage
+              ? productGroup.coverImage
+              : '/assets/image/empty-image.jpg'
+          "
+        />
+        <mat-card-header>
+          <mat-card-title fxLayout="column" fxFlex="60" fxLayoutGap="5px">
+            <span>{{ productGroup.name }}</span>
+            <div class="date">
+              {{ productGroup.borrowStartDate | date: "yyyy-MM-dd" }} ~
+              {{ productGroup.borrowEndDate | date: "yyyy-MM-dd" }}
+            </div>
+          </mat-card-title>
+
+          <mat-card-subtitle
+            fxLayout="column"
+            fxLayoutAlign="center end"
+            fxLayoutAlign.lt-md="center start"
+            fxFlex="40"
+          >
+            <div
+              fxLayout="row"
+              fxLayout.lt-md="column"
+              fxLayoutGap.gt-md="10px"
+            >
+              <span class="price">$ {{ productGroup.price }}/天</span>
+              <div class="comment">
+                <mat-icon>star_rate</mat-icon>
+                <span>{{ productGroup.comment }}</span>
+              </div>
+            </div>
+            <span>{{ productGroup.city }}</span>
+          </mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-actions fxLayout="row" fxLayoutAlign="end" fxLayoutGap="10px">
+          <button
+            mat-flat-button
+            *ngIf="isEdit"
+            type="button"
+            color="accent"
+            (click)="toProductEdit(productGroup.id)"
+          >
+            編輯
+          </button>
+          <button
+            mat-flat-button
+            *ngIf="isEdit"
+            type="button"
+            color="warn"
+            (click)="deleteProductGroup(productGroup.id)"
+          >
+            刪除
+          </button>
+          <button
+            mat-flat-button
+            type="button"
+            color="primary"
+            (click)="toProductDetail(productGroup.id)"
+          >
+            詳細資料
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+
+  <pagination-controls
+    class="pagination"
+    (pageChange)="page = $event"
+    previousLabel=""
+    nextLabel=""
+  ></pagination-controls>
+</div>
+
+<ng-template #emptyProductGroups>
+  <div class="empty-product-groups" fxLayout="row" fxLayoutAlign="center">
+    <h1>沒有任何商品</h1>
+  </div>
+</ng-template>

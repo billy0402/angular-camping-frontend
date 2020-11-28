@@ -1,1 +1,137 @@
-<p>product-filter works!</p>
+<div class="container" fxLayout="row" fxLayoutAlign="center">
+  <div fxLayout="column" fxFlex="80" fxLayoutGap="20px">
+    <form
+      class="search-form"
+      [formGroup]="form"
+      (ngSubmit)="onSubmit()"
+      fxLayout="row"
+      fxLayout.lt-sm="column"
+    >
+      <div fxLayout="column" fxFlex="90">
+        <div fxLayout="row" fxLayout.lt-sm="column">
+          <mat-form-field
+            class="mat-form-field-round date-picker-form-field"
+            appearance="outline"
+            floatLabel="never"
+            (click)="picker.opened = true"
+            fxFlex.gt-xs="34"
+            fxFlex.lt-sm="100"
+          >
+            <mat-date-range-input [rangePicker]="picker">
+              <input
+                matStartDate
+                placeholder="開始日期"
+                formControlName="borrowStartDate"
+              />
+              <input
+                matEndDate
+                placeholder="結束日期"
+                formControlName="borrowEndDate"
+              />
+            </mat-date-range-input>
+            <mat-datepicker-toggle
+              matPrefix
+              [for]="picker"
+            ></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+          </mat-form-field>
+
+          <mat-form-field
+            class="mat-form-field-round select-form-field"
+            appearance="outline"
+            floatLabel="never"
+            fxFlex.gt-xs="33"
+            fxFlex.lt-sm="100"
+          >
+            <mat-icon matPrefix>location_on</mat-icon>
+            <mat-select
+              placeholder="地區"
+              formControlName="cityId"
+              *ngIf="cities; else emptyCity"
+            >
+              <mat-optgroup *ngFor="let cityName of cities" [label]="cityName">
+                <mat-option
+                  *ngFor="let area of getAreas(cityName)"
+                  [value]="area.id"
+                >
+                  {{ area.areaName }}
+                </mat-option>
+              </mat-optgroup>
+            </mat-select>
+            <ng-template #emptyCity>
+              <input
+                matInput
+                type="text"
+                placeholder="地區"
+                formControlName="cityAreaName"
+              />
+            </ng-template>
+          </mat-form-field>
+
+          <mat-form-field
+            class="mat-form-field-round select-form-field"
+            appearance="outline"
+            floatLabel="never"
+            fxFlex.gt-xs="33"
+            fxFlex.lt-sm="100"
+          >
+            <mat-icon matPrefix>local_atm</mat-icon>
+            <mat-select placeholder="預算" formControlName="priceRange">
+              <mat-option value="0">0 ~ 2,000</mat-option>
+              <mat-option value="1">2,001 ~ 4,000</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <mat-form-field
+          class="mat-form-field-round"
+          appearance="outline"
+          floatLabel="never"
+        >
+          <mat-chip-list #chipList>
+            <mat-chip
+              *ngFor="let type of chipTypes"
+              [selectable]="selectable"
+              [removable]="removable"
+              (removed)="removeType(type)"
+            >
+              {{ type.name }}
+              <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+            </mat-chip>
+            <input
+              #typeInput
+              placeholder="選擇類型..."
+              [matChipInputFor]="chipList"
+              [matAutocomplete]="auto"
+              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              [matChipInputAddOnBlur]="addOnBlur"
+              (matChipInputTokenEnd)="inputChip($event)"
+            />
+          </mat-chip-list>
+          <mat-autocomplete
+            #auto="matAutocomplete"
+            (optionSelected)="selectAutoComplete($event)"
+          >
+            <mat-option *ngFor="let type of productTypes" [value]="type.id">
+              {{ type.name }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+
+      <button
+        mat-flat-button
+        class="search"
+        type="submit"
+        fxFlex="10"
+        fxFlex.lt-sm="100"
+      >
+        <mat-icon>search</mat-icon>
+      </button>
+    </form>
+
+    <h4 class="title">篩選結果</h4>
+
+    <app-product-list [productGroups]="productGroups"></app-product-list>
+  </div>
+</div>

@@ -1,1 +1,152 @@
-<p>product-form works!</p>
+<div class="container" fxLayout="row" fxLayoutAlign="center">
+  <mat-card fxFlex="60" fxFlex.lt-md="80">
+    <form
+      [formGroup]="form"
+      (ngSubmit)="onSubmit()"
+      fxLayout="column"
+      fxFlexFill
+      fxLayoutGap="10px"
+    >
+      <img
+        class="cover"
+        alt="cover"
+        [src]="
+          form.value.coverImage
+            ? form.value.coverImage
+            : '/assets/image/empty-image.jpg'
+        "
+      />
+      <div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="20px">
+        <button
+          mat-flat-button
+          type="button"
+          color="primary"
+          (click)="openCoverImageDialog(false)"
+        >
+          新增
+        </button>
+        <button
+          mat-flat-button
+          type="button"
+          color="accent"
+          (click)="openCoverImageDialog(true)"
+        >
+          編輯
+        </button>
+        <button
+          mat-flat-button
+          type="button"
+          color="warn"
+          (click)="deleteCoverImage()"
+        >
+          刪除
+        </button>
+      </div>
+
+      <mat-form-field floatLabel="never">
+        <mat-icon matPrefix>tour</mat-icon>
+        <input matInput type="text" placeholder="標題" formControlName="name" />
+        <mat-error>此欄位為必填</mat-error>
+      </mat-form-field>
+
+      <mat-form-field
+        class="date-picker-form-field"
+        floatLabel="never"
+        (click)="picker.opened = true"
+      >
+        <mat-date-range-input [rangePicker]="picker">
+          <input
+            matStartDate
+            formControlName="borrowStartDate"
+            placeholder="開始開放租借"
+          />
+          <input
+            matEndDate
+            formControlName="borrowEndDate"
+            placeholder="結束開放租借"
+          />
+        </mat-date-range-input>
+        <mat-datepicker-toggle matPrefix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker> </mat-date-range-picker>
+        <mat-error>此欄位為必填</mat-error>
+      </mat-form-field>
+
+      <div
+        class="area"
+        fxLayout="row"
+        fxLayout.lt-sm="column"
+        fxLayoutGap.gt-xs="10px"
+      >
+        <mat-form-field floatLabel="never" fxFlex="50" fxFlex.lt-sm="100">
+          <mat-icon matPrefix>gps_fixed</mat-icon>
+          <mat-select formControlName="cityName" placeholder="市">
+            <mat-option
+              *ngFor="let name of cities"
+              [value]="name"
+              (click)="updateAreas()"
+            >
+              {{ name }}
+            </mat-option>
+          </mat-select>
+          <mat-error>此欄位為必填</mat-error>
+        </mat-form-field>
+
+        <mat-form-field floatLabel="never" fxFlex="50" fxFlex.lt-sm="100">
+          <mat-icon matPrefix>gps_fixed</mat-icon>
+          <mat-select formControlName="cityId" placeholder="區">
+            <mat-option *ngFor="let area of areas" [value]="area.id">
+              {{ area.areaName }}
+            </mat-option>
+          </mat-select>
+          <mat-error>此欄位為必填</mat-error>
+        </mat-form-field>
+      </div>
+
+      <mat-form-field floatLabel="never">
+        <mat-icon matPrefix>attach_money</mat-icon>
+        <input
+          matInput
+          type="number"
+          placeholder="金額 (以天計算)"
+          formControlName="price"
+        />
+        <mat-error>此欄位為必填</mat-error>
+      </mat-form-field>
+
+      <app-product-expansion-panel
+        [products]="products"
+        [isEdit]="true"
+        (editProduct)="editProduct($event)"
+        (deleteProduct)="deleteProduct($event)"
+      ></app-product-expansion-panel>
+
+      <div
+        fxLayout="row"
+        fxLayout.lt-sm="column"
+        fxLayoutAlign="space-around"
+        fxLayoutGap.lt-sm="10px"
+      >
+        <button
+          mat-flat-button
+          type="button"
+          color="primary"
+          (click)="openProductDialog()"
+          fxFlex="30"
+          fxFlex.lt-sm="100"
+        >
+          新增物品
+        </button>
+        <button
+          mat-flat-button
+          type="submit"
+          color="accent"
+          [disabled]="!form.valid"
+          fxFlex="30"
+          fxFlex.lt-sm="100"
+        >
+          上架
+        </button>
+      </div>
+    </form>
+  </mat-card>
+</div>

@@ -1,0 +1,63 @@
+@import "~src/assets/scss/color.scss";
+
+$primary-color: map-get($colors, primary4);
+$font-white: map-get($colors, white);
+$font-red: map-get($colors, red);
+
+.product {
+  &:after {
+    width: 32%;
+    content: "";
+  }
+
+  mat-card {
+    margin-bottom: 10px;
+    border: 3px solid $primary-color;
+    border-radius: 20px;
+    background-color: $primary-color;
+
+    &:not([class*="mat-elevation-z"]) {
+      box-shadow: none;
+    }
+  }
+
+  .mat-card-image {
+    border-radius: 20px;
+  }
+
+  mat-card-title {
+    .date {
+      font-size: 15px;
+      color: $font-white;
+    }
+  }
+
+  mat-card-subtitle {
+    .price {
+      color: $font-red;
+      font-weight: bold;
+    }
+
+    .comment {
+      color: $font-white;
+
+      mat-icon {
+        width: 15px;
+        height: 15px;
+        font-size: 15px;
+      }
+    }
+  }
+
+  mat-card-actions {
+    padding: 0;
+  }
+}
+
+.pagination {
+  text-align: center;
+}
+
+.empty-product-groups {
+  padding: 100px;
+}

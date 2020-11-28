@@ -1,1 +1,104 @@
-<p>product-expansion-panel works!</p>
+<mat-accordion>
+  <mat-expansion-panel
+    *ngFor="let product of products; first as isFirst; index as index"
+    [expanded]="isFirst"
+    [disabled]="isClickButton"
+    (click)="isClickButton = false"
+  >
+    <mat-expansion-panel-header>
+      <mat-panel-title fxLayout="row" fxLayoutAlign="space-between">
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+          <div class="type">{{ product.type }}</div>
+          <span>{{ product.name }} x {{ product.count }}</span>
+        </div>
+
+        <div *ngIf="isEdit" fxLayout="row" fxLayoutGap="10px">
+          <button
+            mat-flat-button
+            type="button"
+            color="accent"
+            (click)="clickEdit(index)"
+          >
+            編輯
+          </button>
+          <button
+            mat-flat-button
+            type="button"
+            color="warn"
+            (click)="clickDelete(index)"
+          >
+            刪除
+          </button>
+        </div>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="25px">
+      <div fxLayout="column" fxFlex="50" fxFlex.lt-sm="100" fxLayoutGap="10px">
+        <div fxLayout="row" fxLayoutAlign="start center">
+          <mat-icon>local_offer</mat-icon>
+          商品品牌： {{ product.brand }}
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="start center">
+          <mat-icon svgIcon="tent"></mat-icon>
+          外觀狀況：
+        </div>
+        <p>{{ product.appearance }}</p>
+
+        <div fxLayout="row" fxLayoutAlign="start center">
+          <mat-icon>school</mat-icon>
+          使用方法：
+        </div>
+        <p>{{ product.useInformation }}</p>
+
+        <div fxLayout="row" fxLayoutAlign="start center">
+          <mat-icon>gavel</mat-icon>
+          損壞賠償：
+        </div>
+        <p>{{ product.brokenCompensation }}</p>
+
+        <div *ngIf="product.relatedLink as link">
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon>link</mat-icon>
+            相關連結：
+          </div>
+          <a [href]="link">{{ link }}</a>
+        </div>
+
+        <div *ngIf="product.memo as memo">
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon>info</mat-icon>
+            其他備註：
+          </div>
+          <p>{{ memo }}</p>
+        </div>
+      </div>
+
+      <div
+        fxLayout="row"
+        fxLayoutAlign="center center"
+        fxFlex="50"
+        fxFlex.lt-sm="100"
+      >
+        <ng-image-slider
+          class="slider"
+          *ngIf="
+            product.imageArray && product.imageArray.length > 0;
+            else emptyImages
+          "
+          [images]="imageToSliderObject(product.imageArray)"
+          [imageSize]="{ width: '300px', height: '200px', space: 0 }"
+        >
+        </ng-image-slider>
+        <ng-template #emptyImages>
+          <img
+            class="slider"
+            alt="product"
+            src="assets/image/empty-image.jpg"
+          />
+        </ng-template>
+      </div>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>

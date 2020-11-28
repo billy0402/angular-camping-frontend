@@ -1,0 +1,49 @@
+@import "~src/assets/scss/color.scss";
+
+$primary-color: map-get($colors, primary4);
+$font-white: map-get($colors, white);
+
+mat-icon {
+  margin-right: 10px;
+  color: $primary-color;
+}
+
+mat-expansion-panel {
+  &:not([class*="mat-elevation-z"]) {
+    box-shadow: none;
+  }
+
+  &.mat-expansion-panel,
+  .mat-expansion-panel:first-of-type,
+  .mat-expansion-panel:last-of-type {
+    border: 1px solid $primary-color;
+    border-radius: 0;
+  }
+
+  mat-expansion-panel-header {
+    margin-bottom: 16px;
+    border-bottom: 1px solid $primary-color;
+    border-radius: 0;
+  }
+
+  mat-panel-title {
+    .type {
+      padding: 5px 15px;
+      border-radius: 20px;
+      background-color: $primary-color;
+      color: $font-white;
+    }
+  }
+}
+
+.slider {
+  width: 300px;
+  height: 200px;
+  border: solid 1px $primary-color;
+
+  ::ng-deep {
+    .ng-image-slider .ng-image-slider-container .main .main-inner .img-div img {
+      border-radius: 0;
+    }
+  }
+}

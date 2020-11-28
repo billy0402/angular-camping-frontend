@@ -1,1 +1,174 @@
-<p>product-form-dialog works!</p>
+<h2
+  mat-dialog-title
+  fxLayout="column"
+  fxLayoutAlign="center center"
+  fxLayoutGap="10px"
+>
+  <mat-icon>add_box</mat-icon>
+  <span>新增物品</span>
+</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div fxLayout="row" fxLayout.lt-sm="column">
+      <div fxLayout="column" fxFlex="60" fxFlex.lt-sm="100" fxLayoutGap="10px">
+        <mat-form-field floatLabel="never">
+          <mat-icon matPrefix>tour</mat-icon>
+          <input
+            matInput
+            type="text"
+            placeholder="物品名稱"
+            formControlName="name"
+          />
+          <mat-error>此欄位為必填</mat-error>
+        </mat-form-field>
+
+        <mat-form-field floatLabel="never">
+          <mat-icon matPrefix>tour</mat-icon>
+          <mat-select placeholder="物品類型" formControlName="type">
+            <mat-option
+              *ngFor="let productType of productTypes"
+              [value]="productType.id"
+            >
+              {{ productType.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error>此欄位為必填</mat-error>
+        </mat-form-field>
+
+        <mat-form-field floatLabel="never">
+          <mat-icon matPrefix>tour</mat-icon>
+          <input
+            matInput
+            type="number"
+            placeholder="數量"
+            formControlName="count"
+          />
+          <mat-error>此欄位為必填</mat-error>
+        </mat-form-field>
+
+        <mat-form-field floatLabel="never">
+          <mat-icon matPrefix>local_offer</mat-icon>
+          <input
+            matInput
+            type="text"
+            placeholder="商品品牌"
+            formControlName="brand"
+          />
+          <mat-error>此欄位為必填</mat-error>
+        </mat-form-field>
+
+        <mat-form-field floatLabel="never">
+          <mat-icon matPrefix>tour</mat-icon>
+          <input
+            matInput
+            type="text"
+            placeholder="外觀狀況"
+            formControlName="appearance"
+          />
+          <mat-error>此欄位為必填</mat-error>
+        </mat-form-field>
+
+        <mat-form-field floatLabel="never">
+          <mat-icon matPrefix>school</mat-icon>
+          <input
+            matInput
+            type="text"
+            placeholder="使用方式"
+            formControlName="useInformation"
+          />
+          <mat-error>此欄位為必填</mat-error>
+        </mat-form-field>
+
+        <mat-form-field floatLabel="never">
+          <mat-icon matPrefix>gavel</mat-icon>
+          <input
+            matInput
+            type="text"
+            placeholder="損壞賠償"
+            formControlName="brokenCompensation"
+          />
+          <mat-error>此欄位為必填</mat-error>
+        </mat-form-field>
+
+        <mat-form-field floatLabel="never">
+          <mat-icon matPrefix>link</mat-icon>
+          <input
+            matInput
+            type="url"
+            placeholder="相關連結"
+            formControlName="relatedLink"
+          />
+        </mat-form-field>
+
+        <mat-form-field floatLabel="never">
+          <mat-icon matPrefix>info</mat-icon>
+          <textarea
+            matInput
+            placeholder="備註..."
+            formControlName="memo"
+          ></textarea>
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="column" fxFlex="40" fxFlex.lt-sm="100" fxLayoutGap="20px">
+        <ng-image-slider
+          class="slider"
+          *ngIf="productImages.length > 0; else emptyImages"
+          [images]="productImages"
+          [imageSize]="{ width: '300px', height: '200px', space: 0 }"
+          (arrowClick)="updateImageIndex($event)"
+        >
+        </ng-image-slider>
+        <ng-template #emptyImages>
+          <img
+            class="slider"
+            alt="product"
+            src="assets/image/empty-image.jpg"
+          />
+        </ng-template>
+
+        <div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="20px">
+          <button
+            mat-flat-button
+            type="button"
+            color="primary"
+            (click)="openImageDialog(false)"
+          >
+            新增
+          </button>
+          <button
+            mat-flat-button
+            type="button"
+            color="accent"
+            (click)="openImageDialog(true)"
+          >
+            編輯
+          </button>
+          <button
+            mat-flat-button
+            type="button"
+            color="warn"
+            (click)="deleteProductImage()"
+          >
+            刪除
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <mat-dialog-actions align="center">
+      <button mat-flat-button mat-dialog-close type="button" color="warn">
+        取消
+      </button>
+      <button
+        mat-flat-button
+        type="submit"
+        color="accent"
+        [disabled]="!form.valid"
+      >
+        完成
+      </button>
+    </mat-dialog-actions>
+  </form>
+</mat-dialog-content>

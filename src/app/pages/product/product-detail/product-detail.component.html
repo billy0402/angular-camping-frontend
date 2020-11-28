@@ -1,1 +1,60 @@
-<p>product-detail works!</p>
+<div class="container" fxLayout="row" fxLayoutAlign="center">
+  <mat-card fxFlex="60" fxFlex.lt-md="80">
+    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="25px">
+      <img
+        mat-card-image
+        class="cover"
+        alt="cover"
+        [src]="
+          productGroup.coverImage
+            ? productGroup.coverImage
+            : '/assets/image/empty-image.jpg'
+        "
+        fxFlex="50"
+      />
+
+      <div fxFlex="50">
+        <mat-card-title>{{ productGroup.name }}</mat-card-title>
+        <mat-card-subtitle fxLayout="column" fxLayoutGap="10px">
+          <div
+            fxLayout="row"
+            fxLayout.lt-sm="column"
+            fxLayoutAlign="space-between center"
+            fxLayoutAlign.lt-sm="start"
+            fxLayoutGap="10px"
+          >
+            <app-star [comment]="productGroup.comment"></app-star>
+            <span>
+              {{ productGroup.city.name }}
+              {{ productGroup.city.areaName }}
+            </span>
+            <span class="price">$ {{ productGroup.price }}/天</span>
+          </div>
+
+          <span>
+            {{ productGroup.borrowStartDate }} ~
+            {{ productGroup.borrowEndDate }}
+          </span>
+
+          <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
+            <mat-icon>account_circle</mat-icon>
+            <a class="owner" (click)="toUserProduct()">
+              {{ productGroup.productOwnerName }}
+            </a>
+          </div>
+        </mat-card-subtitle>
+        <mat-card-actions fxLayoutAlign="end">
+          <button mat-flat-button type="button" (click)="openDialog()">
+            我要租
+          </button>
+        </mat-card-actions>
+      </div>
+    </div>
+
+    <mat-card-content>
+      <app-product-expansion-panel
+        [products]="productGroup.productArray"
+      ></app-product-expansion-panel>
+    </mat-card-content>
+  </mat-card>
+</div>

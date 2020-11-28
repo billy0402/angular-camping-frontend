@@ -1,0 +1,54 @@
+@import "~src/assets/scss/color.scss";
+
+$primary-color: map-get($colors, primary4);
+$font-black: map-get($colors, black);
+$font-yellow: map-get($colors, primary4);
+$font-red: map-get($colors, red);
+
+.container {
+  margin: 3% 0;
+}
+
+mat-card {
+  padding: 3% 5%;
+  color: $primary-color;
+  border-style: solid;
+  border-radius: 20px;
+
+  &:not([class*="mat-elevation-z"]) {
+    box-shadow: none;
+  }
+}
+
+.cover {
+  border: solid 1px $primary-color;
+
+  &.mat-card-image:first-child {
+    margin-top: 0;
+  }
+}
+
+mat-card-title {
+  color: $font-black;
+}
+
+mat-card-subtitle {
+  mat-icon {
+    color: $font-yellow;
+  }
+
+  .price {
+    color: $font-red;
+    font-weight: bold;
+  }
+
+  .owner {
+    text-decoration: underline;
+  }
+}
+
+mat-card-actions {
+  button {
+    background-color: $primary-color;
+  }
+}
