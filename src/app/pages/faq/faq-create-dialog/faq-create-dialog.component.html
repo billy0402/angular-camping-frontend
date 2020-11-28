@@ -1,1 +1,88 @@
-<p>faq-create-dialog works!</p>
+<h2
+  mat-dialog-title
+  fxLayout="column"
+  fxLayoutAlign="center center"
+  fxLayoutGap="10px"
+>
+  <mat-icon>live_help</mat-icon>
+  <span>問題回報</span>
+</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" fxLayout="column" fxFlexFill>
+    <mat-form-field
+      class="mat-form-field-round"
+      appearance="outline"
+      floatLabel="never"
+    >
+      <mat-icon matPrefix>contact_support</mat-icon>
+      <input
+        matInput
+        type="text"
+        placeholder="標題"
+        formControlName="reportTitle"
+      />
+      <mat-error>此欄位為必填</mat-error>
+    </mat-form-field>
+
+    <mat-form-field
+      class="mat-form-field-round"
+      appearance="outline"
+      floatLabel="never"
+    >
+      <mat-icon matPrefix>local_offer</mat-icon>
+      <mat-select placeholder="類型" formControlName="type">
+        <mat-option value="0">帳號相關</mat-option>
+        <mat-option value="1">租借相關</mat-option>
+        <mat-option value="2">款項相關</mat-option>
+        <mat-option value="3">其他</mat-option>
+      </mat-select>
+      <mat-error>此欄位為必填</mat-error>
+    </mat-form-field>
+
+    <mat-form-field
+      class="mat-form-field-round"
+      appearance="outline"
+      floatLabel="never"
+    >
+      <mat-icon matPrefix>email</mat-icon>
+      <input
+        matInput
+        type="text"
+        placeholder="信箱"
+        formControlName="reporterEmail"
+      />
+      <mat-error>此欄位為必填</mat-error>
+    </mat-form-field>
+
+    <mat-form-field
+      class="mat-form-field-round"
+      appearance="outline"
+      floatLabel="never"
+    >
+      <textarea
+        matInput
+        type="text"
+        cols="50"
+        rows="10"
+        placeholder="請輸入你想要問的內容..."
+        formControlName="reportContent"
+      ></textarea>
+      <mat-error>此欄位為必填</mat-error>
+    </mat-form-field>
+
+    <mat-dialog-actions align="center">
+      <button mat-flat-button mat-dialog-close type="button" color="warn">
+        取消
+      </button>
+      <button
+        mat-flat-button
+        type="submit"
+        color="accent"
+        [disabled]="!form.valid"
+      >
+        送出
+      </button>
+    </mat-dialog-actions>
+  </form>
+</mat-dialog-content>
