@@ -1,0 +1,91 @@
+@import "~src/assets/scss/color.scss";
+
+$primary-color: map-get($colors, primary1);
+$accent-color: map-get($colors, primary2);
+$font-black: map-get($colors, black);
+$font-white: map-get($colors, white);
+$bg-black: map-get($colors, black);
+$bg-red: map-get($colors, red);
+$disabled-color: map-get($colors, lightgray);
+
+.container {
+  margin: 3% 0;
+}
+
+mat-card {
+  padding: 3% 5%;
+  color: $primary-color;
+  border-style: solid;
+  border-radius: 20px;
+
+  &:not([class*="mat-elevation-z"]) {
+    box-shadow: none;
+  }
+}
+
+mat-card-title {
+  color: $font-black;
+
+  .avatar {
+    width: 60px;
+    height: 60px;
+    padding: 7px;
+    border: 3px solid $accent-color;
+    border-radius: 50%;
+  }
+
+  .nick-name {
+    margin-top: 10px;
+  }
+
+  .bad-record {
+    font-size: 15px;
+    font-weight: normal;
+
+    .not-compensate {
+      padding: 5px 15px;
+      border-radius: 20px;
+      color: $font-white;
+      background-color: $bg-red;
+    }
+  }
+}
+
+:host ::ng-deep mat-form-field {
+  .mat-form-field-prefix,
+  .mat-form-field-suffix {
+    margin: 1rem 0.5rem 0.5rem;
+  }
+
+  .mat-form-field-infix {
+    margin: auto 0;
+    padding: 1.4rem 0 1.1rem 0;
+    border: none;
+  }
+
+  input.mat-input-element {
+    color: $bg-black;
+  }
+
+  &.mat-form-field-appearance-legacy.mat-form-field-disabled {
+    .mat-form-field-underline {
+      background-color: gray;
+      background-image: none;
+      opacity: 0.5;
+    }
+
+    input.mat-input-element {
+      color: $disabled-color;
+    }
+
+    &.nick-name {
+      .mat-form-field-underline {
+        display: none;
+      }
+
+      input.mat-input-element {
+        color: $bg-black;
+      }
+    }
+  }
+}

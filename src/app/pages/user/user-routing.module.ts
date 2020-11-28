@@ -1,10 +1,27 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
-const routes: Routes = [];
+import { AuthGuard } from '@guards/auth.guard';
+
+import { UserInfoComponent } from './user-info/user-info.component';
+import { UserProductComponent } from './user-product/user-product.component';
+
+const routes: Routes = [
+  { path: '', component: UserInfoComponent, canActivate: [AuthGuard] },
+  {
+    path: 'product',
+    component: UserProductComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: ':account/product',
+    component: UserProductComponent,
+    canActivate: [AuthGuard],
+  },
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class UserRoutingModule { }
+export class UserRoutingModule {}

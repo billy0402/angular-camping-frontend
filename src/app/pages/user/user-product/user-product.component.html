@@ -1,1 +1,42 @@
-<p>user-product works!</p>
+<div class="container" fxLayout="row" fxLayoutAlign="center">
+  <div fxLayout="column" fxFlex="80" fxLayoutGap="20px">
+    <mat-card *ngIf="account">
+      <mat-card-title fxLayout="row" fxLayoutAlign="space-between center">
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="15px">
+          <img class="seller" alt="seller" src="assets/image/seller.svg" />
+          <div fxLayout="column">
+            <span>{{ nickName }} 的商品</span>
+            <div
+              class="bad-record"
+              fxLayout="row"
+              fxLayout.lt-sm="column"
+              fxLayoutAlign="start center"
+              fxLayoutAlign.lt-sm="center"
+              fxLayoutGap="10px"
+            >
+              <app-star [comment]="comment"></app-star>
+              <span *ngFor="let badRecord of badRecords">
+                {{ badRecord.typeName }}: {{ badRecord.count }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <button
+          mat-flat-button
+          *ngIf="isEdit"
+          color="primary"
+          routerLink="/product/add"
+          fxLayoutAlign="end"
+        >
+          新增商品
+        </button>
+      </mat-card-title>
+    </mat-card>
+
+    <app-product-list
+      [productGroups]="productGroups"
+      [isEdit]="isEdit"
+    ></app-product-list>
+  </div>
+</div>

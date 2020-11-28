@@ -1,1 +1,192 @@
-<p>user-info works!</p>
+<div class="container" fxLayout="row" fxLayoutAlign="center">
+  <mat-card *ngIf="user" fxFlex="60" fxFlex.lt-md="80">
+    <form
+      [formGroup]="form"
+      (ngSubmit)="onSubmit()"
+      fxLayout="column"
+      fxFlexFill
+    >
+      <mat-card-title fxLayout="row" fxLayoutGap="15px">
+        <img class="avatar" alt="avatar" src="assets/image/avatar.svg" />
+        <div fxLayout="column">
+          <mat-form-field class="nick-name" fxFlex="100">
+            <input
+              matInput
+              type="text"
+              formControlName="nickName"
+              [value]="user.nickName"
+            />
+          </mat-form-field>
+
+          <div
+            class="bad-record"
+            fxLayout="row"
+            fxLayout.lt-sm="column"
+            fxLayoutAlign="start center"
+            fxLayoutAlign.lt-sm="center"
+            fxLayoutGap="10px"
+          >
+            <span
+              class="not-compensate"
+              *ngIf="user.notCompensate"
+              routerLink="/borrow"
+            >
+              未賠償
+            </span>
+            <app-star [comment]="user.comment"></app-star>
+            <span *ngFor="let badRecord of badRecords">
+              {{ badRecord.typeName }}: {{ badRecord.count }}
+            </span>
+          </div>
+        </div>
+      </mat-card-title>
+
+      <mat-form-field floatLabel="never">
+        <mat-icon matPrefix>person</mat-icon>
+        <input
+          matInput
+          type="text"
+          placeholder="帳號"
+          [value]="user.account"
+          disabled
+        />
+      </mat-form-field>
+
+      <mat-form-field floatLabel="never">
+        <mat-icon matPrefix>perm_identity</mat-icon>
+        <input
+          matInput
+          type="text"
+          placeholder="姓氏"
+          [value]="user.lastName"
+          disabled
+        />
+      </mat-form-field>
+
+      <mat-form-field floatLabel="never">
+        <mat-icon matPrefix>perm_identity</mat-icon>
+        <input
+          matInput
+          type="text"
+          placeholder="名字"
+          [value]="user.firstName"
+          disabled
+        />
+      </mat-form-field>
+
+      <mat-form-field floatLabel="never">
+        <mat-icon matPrefix>wc</mat-icon>
+        <input
+          matInput
+          type="text"
+          placeholder="性別"
+          [value]="user.gender"
+          disabled
+        />
+      </mat-form-field>
+
+      <mat-form-field floatLabel="never">
+        <mat-icon matPrefix>cake</mat-icon>
+        <input
+          matInput
+          type="text"
+          placeholder="生日"
+          [value]="user.birthday"
+          disabled
+        />
+      </mat-form-field>
+
+      <mat-form-field floatLabel="never">
+        <mat-icon matPrefix>details</mat-icon>
+        <mat-select formControlName="experience">
+          <mat-option
+            *ngFor="let experience of experiences"
+            [value]="experience.id"
+          >
+            {{ experience.display }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field floatLabel="never">
+        <mat-icon matPrefix>work_outline</mat-icon>
+        <input
+          matInput
+          type="text"
+          placeholder="銀行帳號"
+          [value]="user.bankAccount"
+          disabled
+        />
+      </mat-form-field>
+
+      <mat-form-field floatLabel="never">
+        <mat-icon matPrefix>email</mat-icon>
+        <input
+          matInput
+          type="email"
+          placeholder="電子郵件"
+          formControlName="email"
+        />
+      </mat-form-field>
+
+      <mat-form-field floatLabel="never">
+        <mat-icon matPrefix>smartphone</mat-icon>
+        <input
+          matInput
+          type="tel"
+          placeholder="手機號碼"
+          formControlName="cellPhone"
+        />
+      </mat-form-field>
+
+      <mat-form-field floatLabel="never">
+        <mat-icon matPrefix>room</mat-icon>
+        <input
+          matInput
+          type="text"
+          placeholder="地址"
+          formControlName="address"
+        />
+      </mat-form-field>
+
+      <mat-card-actions
+        fxLayout="row"
+        fxLayout.xs="column"
+        fxLayoutAlign="center"
+        fxLayoutGap="10px"
+      >
+        <button
+          mat-flat-button
+          type="button"
+          color="accent"
+          *ngIf="!isEditable"
+          (click)="openDialog()"
+          fxFlex="30"
+          fxFlex.lt-sm="100"
+        >
+          修改密碼
+        </button>
+        <button
+          mat-flat-button
+          type="button"
+          [color]="!isEditable ? 'accent' : 'warn'"
+          (click)="onEditClick()"
+          fxFlex="30"
+          fxFlex.lt-sm="100"
+        >
+          {{ !isEditable ? "編輯" : "取消" }}
+        </button>
+        <button
+          mat-flat-button
+          type="submit"
+          color="accent"
+          *ngIf="isEditable"
+          fxFlex="30"
+          fxFlex.lt-sm="100"
+        >
+          修改
+        </button>
+      </mat-card-actions>
+    </form>
+  </mat-card>
+</div>
