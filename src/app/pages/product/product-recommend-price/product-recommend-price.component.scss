@@ -1,0 +1,7 @@
+@import "~src/assets/scss/color.scss";
+
+$font-red: map-get($colors, red);
+
+.price {
+  color: $font-red;
+}

@@ -1,1 +1,42 @@
-<p>product-recommend-price works!</p>
+<div
+  class="container"
+  fxLayout="column"
+  fxLayoutAlign="center center"
+  fxLayoutGap="10px"
+>
+  <h3>推薦價格</h3>
+  <h1 class="price">{{ recommendPrice }}</h1>
+
+  <mat-form-field appearance="fill">
+    <mat-select [(value)]="selectBrandId" (selectionChange)="getProductTypes()">
+      <mat-option *ngFor="let brand of brands" [value]="brand.id">
+        {{ brand.name }}
+      </mat-option>
+    </mat-select>
+    <mat-hint>品牌</mat-hint>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-select
+      [(value)]="selectTypeId"
+      (selectionChange)="getProductSubTypes()"
+    >
+      <mat-option *ngFor="let type of types" [value]="type.id">
+        {{ type.name }}
+      </mat-option>
+    </mat-select>
+    <mat-hint>類型</mat-hint>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-select
+      [(value)]="selectSubTypeId"
+      (selectionChange)="getProductRecommendPrice()"
+    >
+      <mat-option *ngFor="let subType of subTypes" [value]="subType.id">
+        {{ subType.name }}
+      </mat-option>
+    </mat-select>
+    <mat-hint>子類型</mat-hint>
+  </mat-form-field>
+</div>
