@@ -6,6 +6,15 @@
 - [nvm 0.35.3, node 12.18.3, npm 6.14.6](https://nodejs.org/en/)
 - [Angular CLI 10.2.0](https://cli.angular.io/)
 
+## packages
+- [Angular Material](https://material.angular.io/)
+- [Angular Flex-Layout](https://tburleson-layouts-demos.firebaseapp.com/#/docs)
+- [@auth0/angular-jwt](https://github.com/auth0/angular2-jwt)
+- [moment](https://momentjs.com/)
+- [ngx-image-cropper](https://github.com/Mawi137/ngx-image-cropper)
+- [ng-image-slider](https://github.com/sanjayV/ng-image-slider)
+- [ngx-pagination](https://github.com/michaelbromley/ngx-pagination)
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.2.0.
 
 ## Development server
