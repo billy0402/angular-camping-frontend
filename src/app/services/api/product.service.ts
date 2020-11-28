@@ -7,8 +7,12 @@ import {
   ProductGroup,
   ProductGroupDetail,
 } from '@models/product/product-group.model';
-import { ProductType } from '@models/product/product-type.model';
+import {
+  ProductSubType,
+  ProductType,
+} from '@models/product/product-type.model';
 import { ProductGroupFilter } from '@models/product/product-group-filter.model';
+import { ProductBrand } from '@models/product/product-brand.model';
 
 import { HttpService } from '@services/http.service';
 
@@ -97,5 +101,34 @@ export class ProductService {
 
   getProductFilter(): Observable<ApiModel<ProductGroupFilter>> {
     return this.httpService.get<ProductGroupFilter>(`${this.baseUrl}/filter`);
+  }
+
+  getProductBrands(): Observable<ApiModel<ProductBrand[]>> {
+    return this.httpService.get<ProductBrand[]>(`${this.baseUrl}/brand`);
+  }
+
+  getProductBrandTypes(brandId: number): Observable<ApiModel<ProductType[]>> {
+    return this.httpService.get<ProductType[]>(
+      `${this.baseUrl}/type?brand=${brandId}`
+    );
+  }
+
+  getProductBrandSubTypes(
+    brandId: number,
+    typeId: number
+  ): Observable<ApiModel<ProductSubType[]>> {
+    return this.httpService.get<ProductSubType[]>(
+      `${this.baseUrl}/sub-type?brand=${brandId}&type=${typeId}`
+    );
+  }
+
+  getProductRecommendPrice(
+    brandId: number,
+    typeId: number,
+    subTypeId: number
+  ): Observable<ApiModel<{ price: number }>> {
+    return this.httpService.get<{ price: number }>(
+      `${this.baseUrl}/recommend-price?brand=${brandId}&type=${typeId}&subType=${subTypeId}`
+    );
   }
 }
