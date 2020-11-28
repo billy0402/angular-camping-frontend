@@ -1,0 +1,40 @@
+import { ProductGroup } from '@models/product/product-group.model';
+
+export const productGroups: ProductGroup[] = [
+  {
+    id: 1,
+    name: '【SAMCAMP 噴火龍】豪華大型自動帳篷(280*280cm) ',
+    coverImage: 'https://imgur.com/tMDwTUZ.jpg',
+    price: 2000,
+    borrowStartDate: new Date('2020/12/01'),
+    borrowEndDate: new Date('2020/12/31'),
+    city: '台北市 中正區',
+    userName: '張三',
+    productTypeArray: ['1'],
+    comment: 5,
+  },
+  {
+    id: 2,
+    name: '【樂購王】Pavillo 輕便沙灘帳 野餐 釣魚 郊遊 輕巧 使用空間大',
+    coverImage: 'https://imgur.com/Mctb3nR.jpg',
+    price: 1000,
+    borrowStartDate: new Date('2020/12/15'),
+    borrowEndDate: new Date('2020/12/31'),
+    city: '新北市 永和區',
+    userName: '李四',
+    productTypeArray: ['1'],
+    comment: 3,
+  },
+  {
+    id: 3,
+    name: '【大山野營】4-5人帳 客廳帳 別墅帳 一房一廳 露營帳',
+    coverImage: 'https://imgur.com/hKidpX7.jpg',
+    price: 3000,
+    borrowStartDate: new Date('2021/01/01'),
+    borrowEndDate: new Date('2021/12/31'),
+    city: '新北市 樹林區',
+    userName: '',
+    productTypeArray: ['1'],
+    comment: 4,
+  },
+];
