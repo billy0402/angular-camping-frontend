@@ -1,0 +1,47 @@
+@import "~src/assets/scss/color.scss";
+
+$primary-color: map-get($colors, primary1);
+$font-white: map-get($colors, white);
+$field-color: map-get($colors, lightgray);
+
+::ng-deep .mat-dialog-container {
+  padding: 0;
+  overflow: hidden;
+}
+
+.mat-dialog-title {
+  position: relative;
+  padding: 1rem 0;
+  color: $font-white;
+  background-color: $primary-color;
+
+  mat-icon {
+    font-size: xx-large;
+  }
+
+  &::after {
+    position: absolute;
+    top: 100%;
+    border-top: solid 1rem $primary-color;
+    border-left: solid 1rem transparent;
+    border-right: solid 1rem transparent;
+    content: "";
+  }
+}
+
+.mat-dialog-content,
+.mat-dialog-actions {
+  margin: 0;
+  padding: 8px 24px;
+}
+
+:host ::ng-deep mat-form-field.mat-form-field-round {
+  .mat-form-field-wrapper {
+    .mat-form-field-flex {
+      .mat-form-field-outline {
+        border: 1px solid $field-color;
+        border-radius: 0;
+      }
+    }
+  }
+}

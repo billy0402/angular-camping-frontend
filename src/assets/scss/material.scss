@@ -1,0 +1,53 @@
+@import "src/assets/scss/color.scss";
+
+$primary-color: map-get($colors, primary1);
+$font-black: map-get($colors, black);
+$font-white: map-get($colors, white);
+
+input.mat-input-element {
+  color: $font-black;
+}
+
+// form field outline to round
+mat-form-field.mat-form-field-round {
+  ::placeholder {
+    font-size: 16px;
+  }
+
+  .mat-form-field-wrapper {
+    .mat-form-field-flex {
+      .mat-form-field-outline {
+        border: 2px solid $primary-color;
+        border-radius: 30px;
+      }
+
+      .mat-form-field-outline-start,
+      .mat-form-field-outline-end,
+      .mat-form-field-outline-gap {
+        border: none;
+      }
+
+      .mat-form-field-prefix,
+      .mat-form-field-suffix {
+        margin: 0.9rem 0.5rem 0.5rem;
+        cursor: pointer;
+      }
+
+      .mat-form-field-infix {
+        margin: auto 0;
+        padding: 1.4rem 0 1.1rem 0;
+        border: none;
+      }
+    }
+  }
+}
+
+.mat-flat-button {
+  color: $font-white;
+
+  &.mat-primary,
+  &.mat-accent,
+  &.mat-warn {
+    color: $font-white;
+  }
+}
