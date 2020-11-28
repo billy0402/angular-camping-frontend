@@ -1,1 +1,174 @@
-<p>borrow-payment-dialog works!</p>
+<h2
+  mat-dialog-title
+  fxLayout="column"
+  fxLayoutAlign="center center"
+  fxLayoutGap="10px"
+>
+  <mat-icon>payment</mat-icon>
+  <span>付款</span>
+</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" fxLayout="column" fxFlexFill>
+    <span class="subtitle">卡號相關</span>
+    <mat-form-field floatLabel="never">
+      <mat-icon matPrefix>credit_card</mat-icon>
+      <input
+        matInput
+        type="text"
+        placeholder="信用卡號"
+        formControlName="cardId"
+        required
+      />
+      <mat-error>此欄位為必填</mat-error>
+    </mat-form-field>
+
+    <mat-form-field floatLabel="never">
+      <mat-icon matPrefix>privacy_tip</mat-icon>
+      <input
+        matInput
+        type="text"
+        placeholder="安全碼 (卡片背面三碼)"
+        formControlName="safeCode"
+        required
+      />
+      <mat-error>此欄位為必填</mat-error>
+    </mat-form-field>
+
+    <div fxLayout="row" fxLayoutGap="10px">
+      <mat-form-field floatLabel="never" fxFlex="50">
+        <mat-icon matPrefix>today</mat-icon>
+        <mat-select
+          placeholder="有效年份"
+          formControlName="expireYear"
+          required
+        >
+          <mat-option>{{ "-- 填寫年 --" }}</mat-option>
+          <mat-option *ngFor="let year of intRange(20, 26)" [value]="year">
+            {{ year }}
+          </mat-option>
+        </mat-select>
+        <mat-error>此欄位為必填</mat-error>
+      </mat-form-field>
+
+      <mat-form-field floatLabel="never" fxFlex="50">
+        <mat-icon matPrefix>event</mat-icon>
+        <mat-select
+          placeholder="有效月份"
+          formControlName="expireMonth"
+          required
+        >
+          <mat-option>{{ "-- 填寫月 --" }}</mat-option>
+          <mat-option *ngFor="let month of intRange(1, 12)" [value]="month">
+            {{ month }}
+          </mat-option>
+        </mat-select>
+        <mat-error>此欄位為必填</mat-error>
+      </mat-form-field>
+    </div>
+
+    <span class="subtitle">使用者相關</span>
+    <div fxLayout="row" fxLayoutGap="10px">
+      <mat-form-field floatLabel="never" fxFlex="50">
+        <mat-icon matPrefix>person</mat-icon>
+        <input
+          matInput
+          type="text"
+          placeholder="姓氏"
+          formControlName="billLastName"
+          required
+        />
+        <mat-error>此欄位為必填</mat-error>
+      </mat-form-field>
+
+      <mat-form-field floatLabel="never" fxFlex="50">
+        <mat-icon matPrefix>person</mat-icon>
+        <input
+          matInput
+          type="text"
+          placeholder="名字"
+          formControlName="billFirstName"
+          required
+        />
+        <mat-error>此欄位為必填</mat-error>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field floatLabel="never">
+      <mat-icon matPrefix>smartphone</mat-icon>
+      <input
+        matInput
+        type="text"
+        placeholder="手機號碼"
+        formControlName="billCellPhone"
+        required
+      />
+      <mat-error>此欄位為必填</mat-error>
+    </mat-form-field>
+
+    <span class="subtitle">地址相關</span>
+    <div fxLayout="row" fxLayoutGap="10px">
+      <mat-form-field floatLabel="never" fxFlex="20">
+        <mat-icon matPrefix>room</mat-icon>
+        <input
+          matInput
+          type="text"
+          placeholder="郵遞區號"
+          formControlName="billZipCode"
+          required
+        />
+        <mat-error>此欄位為必填</mat-error>
+      </mat-form-field>
+
+      <mat-form-field floatLabel="never" fxFlex="80">
+        <mat-icon matPrefix>room</mat-icon>
+        <input
+          matInput
+          type="text"
+          placeholder="地址"
+          formControlName="billAddress"
+          required
+        />
+        <mat-error>此欄位為必填</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div fxLayout="row" fxLayoutGap="10px">
+      <mat-form-field floatLabel="never" fxFlex="50">
+        <mat-icon matPrefix>room</mat-icon>
+        <input
+          matInput
+          type="text"
+          placeholder="國家"
+          formControlName="billCountry"
+          required
+        />
+        <mat-error>此欄位為必填</mat-error>
+      </mat-form-field>
+
+      <mat-form-field floatLabel="never" fxFlex="50">
+        <mat-icon matPrefix>room</mat-icon>
+        <mat-select placeholder="城市" formControlName="billCity">
+          <mat-option>{{ "--填寫城市 --" }}</mat-option>
+          <mat-option value="台北市">台北市</mat-option>
+          <mat-option value="新北市">新北市</mat-option>
+        </mat-select>
+        <mat-error>此欄位為必填</mat-error>
+      </mat-form-field>
+    </div>
+
+    <mat-dialog-actions align="center">
+      <button mat-flat-button mat-dialog-close type="button" color="warn">
+        取消
+      </button>
+      <button
+        mat-flat-button
+        type="submit"
+        color="accent"
+        [disabled]="!form.valid"
+      >
+        送出
+      </button>
+    </mat-dialog-actions>
+  </form>
+</mat-dialog-content>

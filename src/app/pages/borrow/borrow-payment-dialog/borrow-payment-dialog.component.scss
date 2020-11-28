@@ -1,0 +1,33 @@
+@import "~src/assets/scss/color.scss";
+@import "~src/assets/scss/mat-dialog.scss";
+
+$primary-color: map-get($colors, primary5);
+$icon-color: map-get($colors, primary2);
+$font-gray: map-get($colors, lightgray);
+
+.mat-dialog-title {
+  background-color: $primary-color;
+
+  &::after {
+    border-top: solid 1rem $primary-color;
+  }
+}
+
+.mat-dialog-content {
+  .subtitle {
+    margin-bottom: 10px;
+    color: $font-gray;
+  }
+
+  mat-icon {
+    margin-right: 10px;
+    color: $icon-color;
+  }
+
+  ::ng-deep mat-form-field {
+    .mat-form-field-infix {
+      margin: auto 0;
+      border: none;
+    }
+  }
+}

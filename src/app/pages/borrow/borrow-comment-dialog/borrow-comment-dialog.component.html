@@ -1,1 +1,36 @@
-<p>borrow-comment-dialog works!</p>
+<h2
+  mat-dialog-title
+  fxLayout="column"
+  fxLayoutAlign="center center"
+  fxLayoutGap="10px"
+>
+  <mat-icon>star</mat-icon>
+  <span>{{ data.title }}</span>
+</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" fxLayout="column" fxFlexFill>
+    <mat-slider
+      min="1"
+      max="5"
+      step="1"
+      tickInterval="1"
+      [thumbLabel]="form.value.comment"
+      formControlName="comment"
+    ></mat-slider>
+
+    <mat-dialog-actions align="center">
+      <button mat-flat-button mat-dialog-close type="button" color="warn">
+        取消
+      </button>
+      <button
+        mat-flat-button
+        type="submit"
+        color="accent"
+        [disabled]="!form.valid"
+      >
+        送出
+      </button>
+    </mat-dialog-actions>
+  </form>
+</mat-dialog-content>

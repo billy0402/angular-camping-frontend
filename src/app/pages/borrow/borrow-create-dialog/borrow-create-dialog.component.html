@@ -1,1 +1,71 @@
-<p>borrow-create-dialog works!</p>
+<h2
+  mat-dialog-title
+  fxLayout="column"
+  fxLayoutAlign="center center"
+  fxLayoutGap="10px"
+>
+  <mat-icon>receipt_long</mat-icon>
+  <span>租借商品</span>
+</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" fxLayout="column" fxFlexFill>
+    <mat-form-field
+      class="mat-form-field-round"
+      appearance="outline"
+      floatLabel="never"
+    >
+      <mat-icon matPrefix>tour</mat-icon>
+      <input matInput type="text" [value]="data.productGroup.name" disabled />
+    </mat-form-field>
+
+    <mat-form-field
+      class="mat-form-field-round"
+      appearance="outline"
+      floatLabel="never"
+    >
+      <mat-icon matPrefix>attach_money</mat-icon>
+      <input
+        matInput
+        type="text"
+        [value]="'$ ' + calculateRentalPrice()"
+        disabled
+      />
+    </mat-form-field>
+
+    <mat-form-field class="mat-form-field-round" appearance="outline">
+      <mat-date-range-input
+        [rangePicker]="picker"
+        [min]="minDate"
+        [max]="maxDate"
+      >
+        <input
+          matStartDate
+          placeholder="租借開始"
+          formControlName="borrowStartDate"
+        />
+        <input
+          matEndDate
+          placeholder="租借結束"
+          formControlName="borrowEndDate"
+        />
+      </mat-date-range-input>
+      <mat-datepicker-toggle matPrefix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+
+    <mat-dialog-actions align="center">
+      <button mat-flat-button mat-dialog-close type="button" color="warn">
+        取消
+      </button>
+      <button
+        mat-flat-button
+        type="submit"
+        color="accent"
+        [disabled]="!form.valid"
+      >
+        送出
+      </button>
+    </mat-dialog-actions>
+  </form>
+</mat-dialog-content>

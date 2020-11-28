@@ -1,1 +1,113 @@
-<p>borrow-list works!</p>
+<div class="container" fxLayout="column" fxLayoutAlign="center">
+  <div
+    class="toggle"
+    fxLayout="row"
+    fxLayoutAlign="center center"
+    fxLayoutGap="30px"
+  >
+    <h2>借用</h2>
+    <mat-slide-toggle
+      [(ngModel)]="isRental"
+      (change)="updateRentals($event.checked)"
+    ></mat-slide-toggle>
+    <h2>出租</h2>
+  </div>
+
+  <div
+    class="rentals"
+    *ngIf="rentals.length > 0; else emptyRentals"
+    fxLayout="row wrap"
+    fxLayoutAlign="space-between"
+  >
+    <mat-card
+      *ngFor="let rental of rentals"
+      [style.color]="getStatusColor(rental.status)"
+      fxFlex="32"
+      fxFlex.lt-md="48"
+      fxFlex.lt-sm="100"
+    >
+      <img
+        mat-card-image
+        alt="cover"
+        [src]="
+          rental.coverImage
+            ? rental.coverImage
+            : '/assets/image/empty-image.jpg'
+        "
+      />
+
+      <mat-card-header fxLayout="column">
+        <mat-card-title
+          fxLayout="column"
+          fxLayoutAlign="center start"
+          fxLayoutGap="10px"
+        >
+          <span
+            class="status"
+            [style.background-color]="getStatusColor(rental.status)"
+          >
+            {{ getStatusText(rental.status) }}
+          </span>
+          <span>{{ rental.name }}</span>
+        </mat-card-title>
+        <mat-card-subtitle fxLayout="column" fxLayoutGap="5px">
+          <span>{{ rental.borrowStartDate }} ~ {{ rental.borrowEndDate }}</span>
+          <span class="price">$ {{ rental.price }}</span>
+          <div fxLayout="row" fxLayoutAlign="end">
+            <button
+              mat-flat-button
+              color="primary"
+              type="button"
+              [routerLink]="'/product/' + rental.productGroupId"
+            >
+              商品資訊
+            </button>
+          </div>
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content fxLayout="column" fxLayoutGap="5px">
+        <mat-divider [inset]="true"></mat-divider>
+        <div fxLayout="row" fxLayoutAlign="start center">
+          <i class="material-icons user">person</i>
+          <a class="nick-name" (click)="toUserProduct(rental.user)">
+            {{ rental.user.nickName }}
+          </a>
+        </div>
+        <div class="contact" fxLayout="row" fxLayoutAlign="start center">
+          <mat-icon>phone_in_talk</mat-icon>
+          <a href="tel:{{ rental.user.cellPhone }}">
+            {{ rental.user.cellPhone }}
+          </a>
+        </div>
+        <div class="contact" fxLayout="row" fxLayoutAlign="start center">
+          <mat-icon>email</mat-icon>
+          <a href="mailto:{{ rental.user.email }}">
+            {{ rental.user.email }}
+          </a>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions fxLayout="row" fxLayoutAlign="end" fxLayoutGap="10px">
+        <button
+          mat-flat-button
+          *ngFor="
+            let button of getStatusButton(rental.status);
+            trackBy: trackByIndex
+          "
+          [style.background-color]="button.color"
+          [disabled]="button.disable"
+          (click)="clickStatusButton(button.text, rental.id)"
+        >
+          {{ button.text }}
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>
+
+<ng-template #emptyRentals>
+  <div class="empty-rentals" fxLayout="row" fxLayoutAlign="center">
+    <h1>沒有任何{{ isRental ? "出租" : "借用" }}紀錄</h1>
+  </div>
+</ng-template>

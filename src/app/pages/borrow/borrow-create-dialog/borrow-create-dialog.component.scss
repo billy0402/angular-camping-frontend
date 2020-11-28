@@ -1,0 +1,39 @@
+@import "~src/assets/scss/color.scss";
+@import "~src/assets/scss/mat-dialog.scss";
+
+$primary-color: map-get($colors, primary4);
+$icon-color: map-get($colors, primary2);
+$field-color: map-get($colors, lightgray);
+
+.mat-dialog-title {
+  background-color: $primary-color;
+
+  &::after {
+    border-top: solid 1rem $primary-color;
+  }
+}
+
+:host ::ng-deep {
+  mat-form-field.mat-form-field-round {
+    .mat-form-field-wrapper {
+      mat-icon,
+      .mat-icon-button {
+        color: $icon-color;
+      }
+
+      .mat-form-field-flex {
+        .mat-form-field-outline {
+          border: 1px solid $field-color;
+          border-radius: 0;
+        }
+      }
+    }
+
+    mat-datepicker-toggle {
+      .mat-icon-button {
+        width: 24px !important;
+        height: 24px !important;
+      }
+    }
+  }
+}

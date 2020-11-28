@@ -1,0 +1,120 @@
+@import "~src/assets/scss/color.scss";
+
+$primary-color: map-get($colors, primary5);
+$light-primary-color: unquote($primary-color + "8f");
+$font-black: map-get($colors, black);
+$font-white: map-get($colors, white);
+$font-gray: map-get($colors, gray);
+$font-red: map-get($colors, red);
+
+.container {
+  margin: 0 10%;
+}
+
+.toggle {
+  margin: 30px 0;
+  height: 100px;
+  font-size: 20px;
+  font-weight: bold;
+
+  ::ng-deep {
+    $toggle-height: 25px;
+
+    .mat-slide-toggle-bar {
+      width: $toggle-height * 2;
+      height: $toggle-height;
+      background-color: $light-primary-color;
+    }
+
+    .mat-slide-toggle-thumb {
+      width: $toggle-height * 1.5;
+      height: $toggle-height * 1.5;
+      background-color: $primary-color;
+    }
+
+    .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb-container {
+      transform: translate3d($toggle-height, 0, 0);
+    }
+
+    .mat-slide-toggle-thumb-container {
+      width: $toggle-height * 2;
+      height: $toggle-height;
+      top: -($toggle-height / 4);
+      left: -($toggle-height / 4);
+    }
+  }
+}
+
+.rentals {
+  &:after {
+    width: 32%;
+    content: "";
+  }
+
+  mat-card {
+    margin-bottom: 15px;
+    border-style: solid;
+    border-radius: 20px;
+    color: $primary-color;
+
+    &:not([class*="mat-elevation-z"]) {
+      box-shadow: none;
+    }
+  }
+
+  mat-card-title {
+    color: $font-black;
+
+    .status {
+      padding: 5px 15px;
+      border-radius: 20px;
+      color: $font-white;
+    }
+  }
+
+  mat-card-subtitle {
+    .price {
+      color: $font-red;
+      font-weight: bold;
+    }
+  }
+
+  mat-card-content {
+    padding: 0 16px;
+    color: $font-black;
+
+    .material-icons {
+      margin-right: 10px;
+      color: $primary-color;
+
+      &.user {
+        padding: 10px;
+        border: 2px solid $primary-color;
+        border-radius: 50%;
+        color: $font-white;
+        background-color: $light-primary-color;
+        font-size: 30px;
+      }
+    }
+
+    .nick-name {
+      text-decoration: underline;
+    }
+
+    .contact {
+      padding-left: 15px;
+
+      a {
+        color: $font-gray;
+      }
+    }
+  }
+
+  mat-card-actions {
+    padding: 0 16px 16px;
+  }
+}
+
+.empty-rentals {
+  padding: 100px;
+}
