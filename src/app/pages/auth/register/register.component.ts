@@ -4,11 +4,9 @@ import { Router } from '@angular/router';
 
 import * as moment from 'moment';
 
-import { ApiModel } from '@models/api-model.model';
-import { Experience } from '@models/user/experience.model';
+import { ExperienceType } from '@models/user/experience-type.model';
 
 import { UserService } from '@services/api/user.service';
-import { SnakeBarService } from '@services/ui/snake-bar.service';
 
 @Component({
   selector: 'app-register',
@@ -17,13 +15,12 @@ import { SnakeBarService } from '@services/ui/snake-bar.service';
 })
 export class RegisterComponent implements OnInit {
   form!: FormGroup;
-  experiences!: Experience[];
+  experienceTypes!: ExperienceType[];
   isHide = true;
 
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,
-    private snakeBarService: SnakeBarService,
     private router: Router
   ) {}
 
@@ -48,18 +45,13 @@ export class RegisterComponent implements OnInit {
   }
 
   getExperiences(): void {
-    this.userService.getUserExperiences().subscribe(
-      (res) => {
-        if (!res.result) {
-          this.snakeBarService.open(res.message);
-        }
-
-        this.experiences = res.data;
-      },
-      (err) => {
-        this.snakeBarService.open(err.error.message);
+    this.userService.getExperienceTypes().subscribe((experienceTypes) => {
+      if (!experienceTypes) {
+        return;
       }
-    );
+
+      this.experienceTypes = experienceTypes;
+    });
   }
 
   onSubmit(): void {
@@ -71,17 +63,10 @@ export class RegisterComponent implements OnInit {
         ...this.form.value,
         birthday: formatBirthday,
       })
-      .subscribe(
-        (res: ApiModel<string>) => {
-          this.snakeBarService.open(res.message);
-
-          if (res.result) {
-            this.router.navigate(['auth', 'login']);
-          }
-        },
-        (err) => {
-          this.snakeBarService.open(err.error.message);
+      .subscribe((isSuccess) => {
+        if (isSuccess) {
+          this.router.navigate(['auth', 'login']);
         }
-      );
+      });
   }
 }

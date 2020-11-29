@@ -8,7 +8,6 @@ import { AuthService } from '@services/auth.service';
 import { AccountService } from '@services/account.service';
 import { NotificationService } from '@services/api/notification.service';
 import { SpinnerService } from '@services/ui/spinner.service';
-import { SnakeBarService } from '@services/ui/snake-bar.service';
 
 @Component({
   selector: 'app-top-bar',
@@ -26,8 +25,7 @@ export class TopBarComponent implements OnInit {
     private authService: AuthService,
     private accountService: AccountService,
     private notificationService: NotificationService,
-    private spinnerService: SpinnerService,
-    private snakeBarService: SnakeBarService
+    private spinnerService: SpinnerService
   ) {}
 
   ngOnInit(): void {
@@ -45,32 +43,22 @@ export class TopBarComponent implements OnInit {
   }
 
   getNotifications(): void {
-    this.notificationService.getNotifications().subscribe(
-      (res) => {
-        if (!res.result) {
-          this.snakeBarService.open(res.message);
-        }
-
-        this.notifications = res.data.reverse();
-      },
-      (err) => {
-        this.snakeBarService.open(err.error.message);
+    this.notificationService.getNotifications().subscribe((notifications) => {
+      if (!notifications) {
+        return;
       }
-    );
+
+      this.notifications = notifications.reverse();
+    });
   }
 
   getNotReadCount(): void {
-    this.notificationService.getNotReadCount().subscribe(
-      (res) => {
-        if (!res.result) {
-          this.snakeBarService.open(res.message);
-        }
-
-        this.notReadCount = res.data.count;
-      },
-      (err) => {
-        this.snakeBarService.open(err.error.message);
+    this.notificationService.getNotReadCount().subscribe((data) => {
+      if (!data) {
+        return;
       }
-    );
+
+      this.notReadCount = data.count;
+    });
   }
 }

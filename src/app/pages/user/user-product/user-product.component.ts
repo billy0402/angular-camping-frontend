@@ -6,7 +6,6 @@ import { ProductGroup } from '@models/product/product-group.model';
 
 import { UserService } from '@services/api/user.service';
 import { ProductService } from '@services/api/product.service';
-import { SnakeBarService } from '@services/ui/snake-bar.service';
 
 @Component({
   selector: 'app-user-product',
@@ -24,7 +23,6 @@ export class UserProductComponent implements OnInit {
   constructor(
     private userService: UserService,
     private productService: ProductService,
-    private snakeBarService: SnakeBarService,
     private route: ActivatedRoute
   ) {}
 
@@ -48,48 +46,37 @@ export class UserProductComponent implements OnInit {
   }
 
   getUserInfo(): void {
-    this.userService.getUser().subscribe(
-      (res) => {
-        if (!res.result) {
-          this.snakeBarService.open(res.message);
-        }
-
-        this.updateUserInfo(res.data.account, res.data.nickName);
-      },
-      (err) => {
-        this.snakeBarService.open(err.error.message);
+    this.userService.getUser().subscribe((user) => {
+      if (!user) {
+        return;
       }
-    );
+
+      this.updateUserInfo(user.account, user.nickName);
+    });
   }
 
   getUserCommentAndBadRecord(): void {
-    this.userService.getUserCommentAndBadRecord(this.account).subscribe(
-      (res) => {
-        if (!res.result) {
-          this.snakeBarService.open(res.message);
+    this.userService
+      .getUserCommentAndBadRecord(this.account)
+      .subscribe((data) => {
+        if (!data) {
+          return;
         }
 
-        this.comment = res.data.comment;
-        this.badRecords = res.data.badRecordArray;
-      },
-      (err) => {
-        this.snakeBarService.open(err.error.message);
-      }
-    );
+        this.comment = data.comment;
+        this.badRecords = data.badRecordArray;
+      });
   }
 
   getUserProductGroups(): void {
-    this.productService.getProductGroupsByUser(this.account).subscribe(
-      (res) => {
-        if (!res.result) {
-          this.snakeBarService.open(res.message);
+    this.productService
+      .getProductGroupsByUser(this.account)
+      .subscribe((productGroups) => {
+        if (!productGroups) {
+          return;
         }
 
-        this.productGroups = res.data;
-      },
-      (err) => {
-        this.snakeBarService.open(err.error.message);
-      }
-    );
+        this.productGroups = productGroups;
+      });
   }
 }

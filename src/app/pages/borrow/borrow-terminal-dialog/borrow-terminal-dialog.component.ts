@@ -4,7 +4,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { RentalStatusService } from '@services/api/rental-status.service';
-import { SnakeBarService } from '@services/ui/snake-bar.service';
 
 interface BorrowTerminalDialogData {
   rentalId: number;
@@ -22,8 +21,7 @@ export class BorrowTerminalDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: BorrowTerminalDialogData,
     private dialogRef: MatDialogRef<BorrowTerminalDialogComponent>,
     private formBuilder: FormBuilder,
-    private rentalStatusService: RentalStatusService,
-    private snakeBarService: SnakeBarService
+    private rentalStatusService: RentalStatusService
   ) {}
 
   ngOnInit(): void {
@@ -35,17 +33,10 @@ export class BorrowTerminalDialogComponent implements OnInit {
   onSubmit(): void {
     this.rentalStatusService
       .terminalRental(this.data.rentalId, this.form.value)
-      .subscribe(
-        (res) => {
-          this.snakeBarService.open(res.message);
-
-          if (res.result) {
-            this.dialogRef.close();
-          }
-        },
-        (err) => {
-          this.snakeBarService.open(err.error.message);
+      .subscribe((isSuccess) => {
+        if (isSuccess) {
+          this.dialogRef.close();
         }
-      );
+      });
   }
 }

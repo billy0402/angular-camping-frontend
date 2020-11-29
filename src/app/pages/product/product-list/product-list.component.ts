@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { ProductGroup } from '@models/product/product-group.model';
 
 import { ProductService } from '@services/api/product.service';
-import { SnakeBarService } from '@services/ui/snake-bar.service';
 
 @Component({
   selector: 'app-product-list',
@@ -17,11 +16,7 @@ export class ProductListComponent implements OnInit {
 
   page = 1;
 
-  constructor(
-    private productService: ProductService,
-    private snakeBarService: SnakeBarService,
-    private router: Router
-  ) {}
+  constructor(private productService: ProductService, private router: Router) {}
 
   ngOnInit(): void {}
 
@@ -34,13 +29,6 @@ export class ProductListComponent implements OnInit {
   }
 
   deleteProductGroup(id: number) {
-    this.productService.deleteProductGroup(id).subscribe(
-      (res) => {
-        this.snakeBarService.open(res.message);
-      },
-      (err) => {
-        this.snakeBarService.open(err.error.message);
-      }
-    );
+    this.productService.deleteProductGroup(id).subscribe();
   }
 }

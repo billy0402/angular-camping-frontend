@@ -6,7 +6,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { ProductGroupDetail } from '@models/product/product-group.model';
 
 import { ProductService } from '@services/api/product.service';
-import { SnakeBarService } from '@services/ui/snake-bar.service';
 
 import { BorrowCreateDialogComponent } from '@pages/borrow/borrow-create-dialog/borrow-create-dialog.component';
 
@@ -21,7 +20,6 @@ export class ProductDetailComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
-    private snakeBarService: SnakeBarService,
     private route: ActivatedRoute,
     private router: Router,
     private dialog: MatDialog
@@ -35,18 +33,13 @@ export class ProductDetailComponent implements OnInit {
   }
 
   getProductDetail(id: number): void {
-    this.productService.getProductGroup(id).subscribe(
-      (res) => {
-        if (!res.result) {
-          this.snakeBarService.open(res.message);
-        }
-
-        this.productGroup = res.data;
-      },
-      (err) => {
-        this.snakeBarService.open(err.error.message);
+    this.productService.getProductGroup(id).subscribe((productGroup) => {
+      if (!productGroup) {
+        return;
       }
-    );
+
+      this.productGroup = productGroup;
+    });
   }
 
   toUserProduct() {

@@ -2,20 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
-import { Observable } from 'rxjs';
-
 import { MatDialog } from '@angular/material/dialog';
 import * as moment from 'moment';
 
-import { ApiModel } from '@models/api-model.model';
+import { SelectType } from '@models/select-type.model';
 import { ProductGroupDetail } from '@models/product/product-group.model';
 import { Product, ProductEdit } from '@models/product/product.model';
-import { ProductType } from '@models/product/product-type.model';
 import { City } from '@models/city/city.model';
 
 import { ProductService } from '@services/api/product.service';
 import { CityService } from '@services/api/city.service';
-import { SnakeBarService } from '@services/ui/snake-bar.service';
 
 import { ImageCropperDialogComponent } from '@components/image-cropper-dialog/image-cropper-dialog.component';
 import { ProductFormDialogComponent } from '@pages/product/product-form-dialog/product-form-dialog.component';
@@ -32,14 +28,13 @@ export class ProductFormComponent implements OnInit {
   products: Product[] = [];
   cities: string[] = [];
   areas: City[] = [];
-  productTypes: ProductType[] = [];
+  productTypes: SelectType[] = [];
   isEdit = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private productService: ProductService,
     private cityService: CityService,
-    private snakeBarService: SnakeBarService,
     private route: ActivatedRoute,
     private dialog: MatDialog
   ) {}
@@ -61,39 +56,29 @@ export class ProductFormComponent implements OnInit {
   }
 
   getProductTypes(): void {
-    this.productService.getProductTypes().subscribe(
-      (res) => {
-        if (!res.result) {
-          this.snakeBarService.open(res.message);
-        }
-
-        this.productTypes = res.data;
-
-        this.productId = Number(this.route.snapshot.paramMap.get('id'));
-        if (this.productId) {
-          this.isEdit = true;
-          this.getProductGroup(this.productId);
-        }
-      },
-      (err) => {
-        this.snakeBarService.open(err.error.message);
+    this.productService.getProductTypes().subscribe((productTypes) => {
+      if (!productTypes) {
+        return;
       }
-    );
+
+      this.productTypes = productTypes;
+
+      this.productId = Number(this.route.snapshot.paramMap.get('id'));
+      if (this.productId) {
+        this.isEdit = true;
+        this.getProductGroup(this.productId);
+      }
+    });
   }
 
   getProductGroup(id: number): void {
-    this.productService.getProductGroup(id).subscribe(
-      (res) => {
-        if (!res.result) {
-          this.snakeBarService.open(res.message);
-        }
-
-        this.updateFormValue(res.data);
-      },
-      (err) => {
-        this.snakeBarService.open(err.error.message);
+    this.productService.getProductGroup(id).subscribe((productGroup) => {
+      if (!productGroup) {
+        return;
       }
-    );
+
+      this.updateFormValue(productGroup);
+    });
   }
 
   updateFormValue(data: ProductGroupDetail): void {
@@ -130,19 +115,14 @@ export class ProductFormComponent implements OnInit {
   }
 
   getCities(): void {
-    this.cityService.getCity().subscribe(
-      (res) => {
-        if (!res.result) {
-          this.snakeBarService.open(res.message);
-        }
-
-        this.cityService.cities = res.data;
-        this.cities = this.cityService.cityNames;
-      },
-      (err) => {
-        this.snakeBarService.open(err.error.message);
+    this.cityService.getCity().subscribe((cities) => {
+      if (!cities) {
+        return;
       }
-    );
+
+      this.cityService.cities = cities;
+      this.cities = this.cityService.cityNames;
+    });
   }
 
   updateAreas(): void {
@@ -207,24 +187,15 @@ export class ProductFormComponent implements OnInit {
   }
 
   onSubmit(): void {
-    let action!: Observable<ApiModel<string>>;
     const data = {
       ...this.form.value,
       borrowStartDate: this.dateFormatter(this.form.value.borrowStartDate),
       borrowEndDate: this.dateFormatter(this.form.value.borrowEndDate),
     };
 
-    action = this.isEdit
+    const action = this.isEdit
       ? this.productService.updateProductGroup(this.productId, data)
       : this.productService.addProductGroup(data);
-
-    action.subscribe(
-      (res) => {
-        this.snakeBarService.open(res.message);
-      },
-      (err) => {
-        this.snakeBarService.open(err.error.message);
-      }
-    );
+    action.subscribe();
   }
 }

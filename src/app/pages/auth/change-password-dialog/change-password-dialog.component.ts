@@ -4,7 +4,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 
 import { UserService } from '@services/api/user.service';
-import { SnakeBarService } from '@services/ui/snake-bar.service';
 
 @Component({
   selector: 'app-change-password-dialog',
@@ -18,8 +17,7 @@ export class ChangePasswordDialogComponent implements OnInit {
   constructor(
     private dialogRef: MatDialogRef<ChangePasswordDialogComponent>,
     private formBuilder: FormBuilder,
-    private userService: UserService,
-    private snakeBarService: SnakeBarService
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
@@ -31,17 +29,10 @@ export class ChangePasswordDialogComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.userService.updatePassword(this.form.value).subscribe(
-      (res) => {
-        this.snakeBarService.open(res.message);
-
-        if (res.result) {
-          this.dialogRef.close();
-        }
-      },
-      (err) => {
-        this.snakeBarService.open(err.error.message);
+    this.userService.updatePassword(this.form.value).subscribe((isSuccess) => {
+      if (isSuccess) {
+        this.dialogRef.close();
       }
-    );
+    });
   }
 }

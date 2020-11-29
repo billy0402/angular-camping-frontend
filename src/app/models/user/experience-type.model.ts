@@ -1,4 +1,4 @@
 export interface ExperienceType {
-  id: string;
+  id: number;
   display: string;
 }

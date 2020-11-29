@@ -4,7 +4,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 
 import { UserService } from '@services/api/user.service';
-import { SnakeBarService } from '@services/ui/snake-bar.service';
 
 @Component({
   selector: 'app-forget-password-dialog',
@@ -17,8 +16,7 @@ export class ForgetPasswordDialogComponent implements OnInit {
   constructor(
     private dialogRef: MatDialogRef<ForgetPasswordDialogComponent>,
     private formBuilder: FormBuilder,
-    private userService: UserService,
-    private snakeBarService: SnakeBarService
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
@@ -30,17 +28,10 @@ export class ForgetPasswordDialogComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.userService.forgetPassword(this.form.value).subscribe(
-      (res) => {
-        this.snakeBarService.open(res.message);
-
-        if (res.result) {
-          this.dialogRef.close();
-        }
-      },
-      (err) => {
-        this.snakeBarService.open(err.error.message);
+    this.userService.forgetPassword(this.form.value).subscribe((isSuccess) => {
+      if (isSuccess) {
+        this.dialogRef.close();
       }
-    );
+    });
   }
 }

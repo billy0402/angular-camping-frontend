@@ -5,11 +5,9 @@ import { Router } from '@angular/router';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import * as moment from 'moment';
 
-import { ApiModel } from '@models/api-model.model';
 import { ProductGroupDetail } from '@models/product/product-group.model';
 
 import { RentalService } from '@services/api/rental.service';
-import { SnakeBarService } from '@services/ui/snake-bar.service';
 
 interface BorrowCreateDialogData {
   productGroupId: number;
@@ -31,7 +29,6 @@ export class BorrowCreateDialogComponent implements OnInit {
     private dialogRef: MatDialogRef<BorrowCreateDialogComponent>,
     private formBuilder: FormBuilder,
     private rentalService: RentalService,
-    private snakeBarService: SnakeBarService,
     private router: Router
   ) {}
 
@@ -87,18 +84,11 @@ export class BorrowCreateDialogComponent implements OnInit {
       borrowEndDate: this.dateFormat(this.form.value.borrowEndDate),
     };
 
-    this.rentalService.addRental(data).subscribe(
-      (res: ApiModel<{ id: number }>) => {
-        this.snakeBarService.open(res.message);
-
-        if (res.result) {
-          this.dialogRef.close();
-          this.router.navigate(['borrow']);
-        }
-      },
-      (err) => {
-        this.snakeBarService.open(err.error.message);
+    this.rentalService.addRental(data).subscribe((isSuccess) => {
+      if (isSuccess) {
+        this.dialogRef.close();
+        this.router.navigate(['borrow']);
       }
-    );
+    });
   }
 }

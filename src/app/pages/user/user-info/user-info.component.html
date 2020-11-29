@@ -100,7 +100,7 @@
         <mat-icon matPrefix>details</mat-icon>
         <mat-select formControlName="experience">
           <mat-option
-            *ngFor="let experience of experiences"
+            *ngFor="let experience of experienceTypes"
             [value]="experience.id"
           >
             {{ experience.display }}

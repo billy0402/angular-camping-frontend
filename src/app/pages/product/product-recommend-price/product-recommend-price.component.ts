@@ -1,13 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
-import { ProductBrand } from '@models/product/product-brand.model';
-import {
-  ProductSubType,
-  ProductType,
-} from '@models/product/product-type.model';
+import { SelectType } from '@models/select-type.model';
 
 import { ProductService } from '@services/api/product.service';
-import { SnakeBarService } from '@services/ui/snake-bar.service';
 
 @Component({
   selector: 'app-product-recommend-price',
@@ -15,75 +10,59 @@ import { SnakeBarService } from '@services/ui/snake-bar.service';
   styleUrls: ['./product-recommend-price.component.scss'],
 })
 export class ProductRecommendPriceComponent implements OnInit {
-  brands: ProductBrand[] = [];
-  types: ProductType[] = [];
-  subTypes: ProductSubType[] = [];
+  brands: SelectType[] = [];
+  types: SelectType[] = [];
+  subTypes: SelectType[] = [];
   recommendPrice!: number;
 
   selectBrandId!: number;
   selectTypeId!: number;
   selectSubTypeId!: number;
 
-  constructor(
-    private productService: ProductService,
-    private snakeBarService: SnakeBarService
-  ) {}
+  constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
     this.getProductBrands();
   }
 
   getProductBrands(): void {
-    this.productService.getProductBrands().subscribe(
-      (res) => {
-        if (!res.result) {
-          this.snakeBarService.open(res.message);
-        }
-
-        this.brands = res.data;
-      },
-      (err) => {
-        this.snakeBarService.open(err.error.message);
+    this.productService.getProductBrands().subscribe((brands) => {
+      if (!brands) {
+        return;
       }
-    );
+
+      this.brands = brands;
+    });
   }
 
   getProductTypes(): void {
-    this.productService.getProductBrandTypes(this.selectBrandId).subscribe(
-      (res) => {
-        if (!res.result) {
-          this.snakeBarService.open(res.message);
+    this.productService
+      .getProductBrandTypes(this.selectBrandId)
+      .subscribe((types) => {
+        if (!types) {
+          return;
         }
 
-        this.types = res.data;
+        this.types = types;
         this.subTypes = [];
         this.selectTypeId = null;
         this.selectSubTypeId = null;
         this.recommendPrice = null;
-      },
-      (err) => {
-        this.snakeBarService.open(err.error.message);
-      }
-    );
+      });
   }
 
   getProductSubTypes(): void {
     this.productService
       .getProductBrandSubTypes(this.selectBrandId, this.selectTypeId)
-      .subscribe(
-        (res) => {
-          if (!res.result) {
-            this.snakeBarService.open(res.message);
-          }
-
-          this.subTypes = res.data;
-          this.recommendPrice = null;
-          this.selectSubTypeId = null;
-        },
-        (err) => {
-          this.snakeBarService.open(err.error.message);
+      .subscribe((subTypes) => {
+        if (!subTypes) {
+          return;
         }
-      );
+
+        this.subTypes = subTypes;
+        this.recommendPrice = null;
+        this.selectSubTypeId = null;
+      });
   }
 
   getProductRecommendPrice(): void {
@@ -93,17 +72,12 @@ export class ProductRecommendPriceComponent implements OnInit {
         this.selectTypeId,
         this.selectSubTypeId
       )
-      .subscribe(
-        (res) => {
-          if (!res.result) {
-            this.snakeBarService.open(res.message);
-          }
-
-          this.recommendPrice = res.data.price;
-        },
-        (err) => {
-          this.snakeBarService.open(err.error.message);
+      .subscribe((data) => {
+        if (!data) {
+          return;
         }
-      );
+
+        this.recommendPrice = data.price;
+      });
   }
 }

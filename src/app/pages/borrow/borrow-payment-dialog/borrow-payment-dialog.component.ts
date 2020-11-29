@@ -3,12 +3,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
-import { ApiModel } from '@models/api-model.model';
 import { User } from '@models/user/user.model';
 
 import { UserService } from '@services/api/user.service';
 import { RentalStatusService } from '@services/api/rental-status.service';
-import { SnakeBarService } from '@services/ui/snake-bar.service';
 
 interface BorrowPaymentDialog {
   rentalId: number;
@@ -27,8 +25,7 @@ export class BorrowPaymentDialogComponent implements OnInit {
     private dialogRef: MatDialogRef<BorrowPaymentDialogComponent>,
     private formBuilder: FormBuilder,
     private rentalStatusService: RentalStatusService,
-    private userService: UserService,
-    private snakeBarService: SnakeBarService
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
@@ -57,18 +54,13 @@ export class BorrowPaymentDialogComponent implements OnInit {
   }
 
   getUserInfo(): void {
-    this.userService.getUser().subscribe(
-      (res) => {
-        if (!res.result) {
-          this.snakeBarService.open(res.message);
-        }
-
-        this.updateFormValue(res.data);
-      },
-      (err) => {
-        this.snakeBarService.open(err.error.message);
+    this.userService.getUser().subscribe((user) => {
+      if (!user) {
+        return;
       }
-    );
+
+      this.updateFormValue(user);
+    });
   }
 
   updateFormValue(user: User): void {
@@ -83,17 +75,10 @@ export class BorrowPaymentDialogComponent implements OnInit {
   onSubmit(): void {
     this.rentalStatusService
       .payRental(this.data.rentalId, this.form.value)
-      .subscribe(
-        (res: ApiModel<string>) => {
-          this.snakeBarService.open(res.message);
-
-          if (res.result) {
-            this.dialogRef.close();
-          }
-        },
-        (err) => {
-          this.snakeBarService.open(err.error.message);
+      .subscribe((isSuccess) => {
+        if (isSuccess) {
+          this.dialogRef.close();
         }
-      );
+      });
   }
 }

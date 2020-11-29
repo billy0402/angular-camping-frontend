@@ -8,9 +8,9 @@ import { Product, ProductEdit } from '@models/product/product.model';
 import { ProductImage } from '@models/product/product-image.model';
 import { SliderImage } from '@models/product/slider-image.model';
 
-import { ProductFormDialogComponent } from '@pages/product/product-form-dialog/product-form-dialog.component';
 import { ProductService } from '@services/api/product.service';
-import { SnakeBarService } from '@services/ui/snake-bar.service';
+
+import { ProductFormDialogComponent } from '@pages/product/product-form-dialog/product-form-dialog.component';
 
 @Component({
   selector: 'app-product-expansion-panel',
@@ -31,7 +31,6 @@ export class ProductExpansionPanelComponent implements OnInit {
     private iconRegistry: MatIconRegistry,
     private sanitizer: DomSanitizer,
     private productService: ProductService,
-    private snakeBarService: SnakeBarService,
     private dialog: MatDialog
   ) {
     iconRegistry.addSvgIcon(

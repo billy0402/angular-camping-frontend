@@ -3,19 +3,18 @@ import { Router } from '@angular/router';
 
 import { MatDialog } from '@angular/material/dialog';
 
+import { SelectType } from '@models/select-type.model';
 import { Rental, User } from '@models/rental/rental.model';
-import { RentalStatusType } from '@models/rental/rental-status-type.model';
 
 import { BorrowStatus } from '@enums/borrow-status.enum';
 import { Color } from '@enums/color.enum';
 
 import { RentalService } from '@services/api/rental.service';
 import { RentalStatusService } from '@services/api/rental-status.service';
-import { SnakeBarService } from '@services/ui/snake-bar.service';
 
 import { FoolProofDialogComponent } from '@components/fool-proof-dialog/fool-proof-dialog.component';
-import { BorrowTerminalDialogComponent } from '@pages/borrow/borrow-terminal-dialog/borrow-terminal-dialog.component';
 import { BorrowPaymentDialogComponent } from '@pages/borrow/borrow-payment-dialog/borrow-payment-dialog.component';
+import { BorrowTerminalDialogComponent } from '@pages/borrow/borrow-terminal-dialog/borrow-terminal-dialog.component';
 import { BorrowCommentDialogComponent } from '@pages/borrow/borrow-comment-dialog/borrow-comment-dialog.component';
 
 class StatusButton {
@@ -38,12 +37,11 @@ class StatusButton {
 export class BorrowListComponent implements OnInit {
   isRental = false;
   rentals: Rental[] = [];
-  rentalStatusTypes: RentalStatusType[] = [];
+  rentalStatusTypes: SelectType[] = [];
 
   constructor(
     private rentalService: RentalService,
     private rentalStatusService: RentalStatusService,
-    private snakeBarService: SnakeBarService,
     private dialog: MatDialog,
     private router: Router
   ) {}
@@ -54,25 +52,17 @@ export class BorrowListComponent implements OnInit {
   }
 
   updateRentals(isRental: boolean): void {
-    let rentals;
-    if (isRental) {
-      rentals = this.rentalService.getRentals();
-    } else {
-      rentals = this.rentalService.getBorrows();
-    }
+    const action = isRental
+      ? this.rentalService.getRentals()
+      : this.rentalService.getBorrows();
 
-    rentals.subscribe(
-      (res) => {
-        if (!res.result) {
-          this.snakeBarService.open(res.message);
-        }
-
-        this.rentals = res.data;
-      },
-      (err) => {
-        this.snakeBarService.open(err.error.message);
+    action.subscribe((rentals) => {
+      if (!rentals) {
+        return;
       }
-    );
+
+      this.rentals = rentals;
+    });
   }
 
   toUserProduct(user: User): void {
@@ -82,18 +72,13 @@ export class BorrowListComponent implements OnInit {
   }
 
   getRentalStatusType(): void {
-    this.rentalService.getRentalStatusTypes().subscribe(
-      (res) => {
-        if (!res.result) {
-          this.snakeBarService.open(res.message);
-        }
-
-        this.rentalStatusTypes = res.data;
-      },
-      (err) => {
-        this.snakeBarService.open(err.error.message);
+    this.rentalService.getRentalStatusTypes().subscribe((rentalStatusTypes) => {
+      if (!rentalStatusTypes) {
+        return;
       }
-    );
+
+      this.rentalStatusTypes = rentalStatusTypes;
+    });
   }
 
   getStatusText(status: BorrowStatus): string {
@@ -211,15 +196,7 @@ export class BorrowListComponent implements OnInit {
       if (!action) {
         return;
       }
-
-      action.subscribe(
-        (res) => {
-          this.snakeBarService.open(res.message);
-        },
-        (err) => {
-          this.snakeBarService.open(err.error.message);
-        }
-      );
+      action.subscribe();
     });
   }
 

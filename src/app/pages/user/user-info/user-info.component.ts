@@ -3,13 +3,11 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 
 import { MatDialog } from '@angular/material/dialog';
 
-import { ApiModel } from '@models/api-model.model';
 import { User } from '@models/user/user.model';
 import { BadRecord } from '@models/user/comment-and-bad-record.model';
-import { Experience } from '@models/user/experience.model';
+import { ExperienceType } from '@models/user/experience-type.model';
 
 import { UserService } from '@services/api/user.service';
-import { SnakeBarService } from '@services/ui/snake-bar.service';
 
 import { ChangePasswordDialogComponent } from '@pages/auth/change-password-dialog/change-password-dialog.component';
 
@@ -21,14 +19,13 @@ import { ChangePasswordDialogComponent } from '@pages/auth/change-password-dialo
 export class UserInfoComponent implements OnInit {
   user!: User;
   badRecords: BadRecord[] = [];
-  experiences: Experience[] = [];
+  experienceTypes: ExperienceType[] = [];
   form!: FormGroup;
   isEditable = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,
-    private snakeBarService: SnakeBarService,
     private dialog: MatDialog
   ) {}
 
@@ -47,20 +44,15 @@ export class UserInfoComponent implements OnInit {
   }
 
   getUserInfo(): void {
-    this.userService.getUser().subscribe(
-      (res) => {
-        if (!res.result) {
-          this.snakeBarService.open(res.message);
-        }
-
-        this.user = res.data;
-        this.updateFormValue(this.user);
-        this.getUserCommentAndBadRecord();
-      },
-      (err) => {
-        this.snakeBarService.open(err.error.message);
+    this.userService.getUser().subscribe((user) => {
+      if (!user) {
+        return;
       }
-    );
+
+      this.user = user;
+      this.updateFormValue(user);
+      this.getUserCommentAndBadRecord();
+    });
   }
 
   updateFormValue(data: User): void {
@@ -74,33 +66,25 @@ export class UserInfoComponent implements OnInit {
   }
 
   getUserCommentAndBadRecord(): void {
-    this.userService.getUserCommentAndBadRecord(this.user.account).subscribe(
-      (res) => {
-        if (!res.result) {
-          this.snakeBarService.open(res.message);
+    this.userService
+      .getUserCommentAndBadRecord(this.user.account)
+      .subscribe((data) => {
+        if (!data) {
+          return;
         }
 
-        this.badRecords = res.data.badRecordArray;
-      },
-      (err) => {
-        this.snakeBarService.open(err.error.message);
-      }
-    );
+        this.badRecords = data.badRecordArray;
+      });
   }
 
   getExperiences(): void {
-    this.userService.getUserExperiences().subscribe(
-      (res) => {
-        if (!res.result) {
-          this.snakeBarService.open(res.message);
-        }
-
-        this.experiences = res.data;
-      },
-      (err) => {
-        this.snakeBarService.open(err.error.message);
+    this.userService.getExperienceTypes().subscribe((experienceTypes) => {
+      if (!experienceTypes) {
+        return;
       }
-    );
+
+      this.experienceTypes = experienceTypes;
+    });
   }
 
   onEditClick(): void {
@@ -113,15 +97,11 @@ export class UserInfoComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.userService.updateUser(this.form.value).subscribe(
-      (res: ApiModel<string>) => {
-        this.snakeBarService.open(res.message);
+    this.userService.updateUser(this.form.value).subscribe((isSuccess) => {
+      if (isSuccess) {
         this.isEditable = false;
-      },
-      (err) => {
-        this.snakeBarService.open(err.error.message);
       }
-    );
+    });
   }
 
   openDialog(): void {

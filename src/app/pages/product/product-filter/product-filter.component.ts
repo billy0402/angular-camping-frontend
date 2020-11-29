@@ -9,13 +9,12 @@ import {
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import * as moment from 'moment';
 
+import { SelectType } from '@models/select-type.model';
 import { ProductGroup } from '@models/product/product-group.model';
-import { ProductType } from '@models/product/product-type.model';
 import { City } from '@models/city/city.model';
 
 import { ProductService } from '@services/api/product.service';
 import { CityService } from '@services/api/city.service';
-import { SnakeBarService } from '@services/ui/snake-bar.service';
 
 @Component({
   selector: 'app-product-filter',
@@ -27,11 +26,11 @@ export class ProductFilterComponent implements OnInit {
   @ViewChild('auto') matAutocomplete!: MatAutocomplete;
 
   form!: FormGroup;
-  productTypes: ProductType[] = [];
+  productTypes: SelectType[] = [];
   cities: string[] = [];
   productGroups: ProductGroup[] = [];
 
-  chipTypes: ProductType[] = [];
+  chipTypes: SelectType[] = [];
   visible = true;
   selectable = true;
   removable = true;
@@ -41,8 +40,7 @@ export class ProductFilterComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private productService: ProductService,
-    private cityService: CityService,
-    private snakeBarService: SnakeBarService
+    private cityService: CityService
   ) {}
 
   ngOnInit(): void {
@@ -60,34 +58,24 @@ export class ProductFilterComponent implements OnInit {
   }
 
   getProductTypes() {
-    this.productService.getProductTypes().subscribe(
-      (res) => {
-        if (!res.result) {
-          this.snakeBarService.open(res.message);
-        }
-
-        this.productTypes = res.data;
-      },
-      (err) => {
-        this.snakeBarService.open(err.error.message);
+    this.productService.getProductTypes().subscribe((productTypes) => {
+      if (!productTypes) {
+        return;
       }
-    );
+
+      this.productTypes = productTypes;
+    });
   }
 
   getCities(): void {
-    this.cityService.getCity().subscribe(
-      (res) => {
-        if (!res.result) {
-          this.snakeBarService.open(res.message);
-        }
-
-        this.cityService.cities = res.data;
-        this.cities = this.cityService.cityNames;
-      },
-      (err) => {
-        this.snakeBarService.open(err.error.message);
+    this.cityService.getCity().subscribe((cities) => {
+      if (!cities) {
+        return;
       }
-    );
+
+      this.cityService.cities = cities;
+      this.cities = this.cityService.cityNames;
+    });
   }
 
   getAreas(cityName: string): City[] {
@@ -96,18 +84,13 @@ export class ProductFilterComponent implements OnInit {
   }
 
   getProductGroups(params: string = ''): void {
-    this.productService.getProductGroups(params).subscribe(
-      (res) => {
-        if (!res.result) {
-          this.snakeBarService.open(res.message);
-        }
-
-        this.productGroups = res.data;
-      },
-      (err) => {
-        this.snakeBarService.open(err.error.message);
+    this.productService.getProductGroups(params).subscribe((productGroups) => {
+      if (!productGroups) {
+        return;
       }
-    );
+
+      this.productGroups = productGroups;
+    });
   }
 
   addType(value: string): void {
@@ -119,7 +102,7 @@ export class ProductFilterComponent implements OnInit {
     }
   }
 
-  removeType(type: ProductType): void {
+  removeType(type: SelectType): void {
     const index = this.chipTypes.indexOf(type);
 
     if (index >= 0) {

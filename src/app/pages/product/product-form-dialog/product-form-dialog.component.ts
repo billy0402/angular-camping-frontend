@@ -7,13 +7,12 @@ import {
   MatDialogRef,
 } from '@angular/material/dialog';
 
+import { SelectType } from '@models/select-type.model';
 import { Product, ProductEdit } from '@models/product/product.model';
-import { ProductType } from '@models/product/product-type.model';
 import { ProductImage } from '@models/product/product-image.model';
 import { SliderImage } from '@models/product/slider-image.model';
 
 import { ProductService } from '@services/api/product.service';
-import { SnakeBarService } from '@services/ui/snake-bar.service';
 
 import { ImageCropperDialogComponent } from '@components/image-cropper-dialog/image-cropper-dialog.component';
 
@@ -28,7 +27,7 @@ interface ProductFormDialogData {
 })
 export class ProductFormDialogComponent implements OnInit {
   form!: FormGroup;
-  productTypes: ProductType[] = [];
+  productTypes: SelectType[] = [];
   productImages: SliderImage[] = [];
   imageIndex = 0;
 
@@ -37,7 +36,6 @@ export class ProductFormDialogComponent implements OnInit {
     private dialogRef: MatDialogRef<ImageCropperDialogComponent>,
     private formBuilder: FormBuilder,
     private productService: ProductService,
-    private snakeBarService: SnakeBarService,
     private dialog: MatDialog
   ) {}
 
@@ -59,21 +57,16 @@ export class ProductFormDialogComponent implements OnInit {
   }
 
   getProductTypes(): void {
-    this.productService.getProductTypes().subscribe(
-      (res) => {
-        if (!res.result) {
-          this.snakeBarService.open(res.message);
-        }
-
-        this.productTypes = res.data;
-        if (this.data) {
-          this.updateFormValue(this.data.product);
-        }
-      },
-      (err) => {
-        this.snakeBarService.open(err.error.message);
+    this.productService.getProductTypes().subscribe((productTypes) => {
+      if (!productTypes) {
+        return;
       }
-    );
+
+      this.productTypes = productTypes;
+      if (this.data) {
+        this.updateFormValue(this.data.product);
+      }
+    });
   }
 
   transformDetailToEdit(product: Product): ProductEdit {

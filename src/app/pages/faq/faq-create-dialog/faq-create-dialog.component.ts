@@ -7,7 +7,6 @@ import { User } from '@models/user/user.model';
 
 import { ProblemReportService } from '@services/api/problem-report.service';
 import { UserService } from '@services/api/user.service';
-import { SnakeBarService } from '@services/ui/snake-bar.service';
 
 @Component({
   selector: 'app-faq-create-dialog',
@@ -21,8 +20,7 @@ export class FaqCreateDialogComponent implements OnInit {
     private dialogRef: MatDialogRef<FaqCreateDialogComponent>,
     private formBuilder: FormBuilder,
     private problemReportService: ProblemReportService,
-    private userService: UserService,
-    private snakeBarService: SnakeBarService
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
@@ -37,18 +35,13 @@ export class FaqCreateDialogComponent implements OnInit {
   }
 
   getUserInfo(): void {
-    this.userService.getUser().subscribe(
-      (res) => {
-        if (!res.result) {
-          this.snakeBarService.open(res.message);
-        }
-
-        this.updateFormValue(res.data);
-      },
-      (err) => {
-        this.snakeBarService.open(err.error.message);
+    this.userService.getUser().subscribe((user) => {
+      if (!user) {
+        return;
       }
-    );
+
+      this.updateFormValue(user);
+    });
   }
 
   updateFormValue(user: User): void {
@@ -58,17 +51,12 @@ export class FaqCreateDialogComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.problemReportService.addProblemReport(this.form.value).subscribe(
-      (res) => {
-        this.snakeBarService.open(res.message);
-
-        if (res.result) {
+    this.problemReportService
+      .addProblemReport(this.form.value)
+      .subscribe((isSuccess) => {
+        if (isSuccess) {
           this.dialogRef.close();
         }
-      },
-      (err) => {
-        this.snakeBarService.open(err.error.message);
-      }
-    );
+      });
   }
 }
