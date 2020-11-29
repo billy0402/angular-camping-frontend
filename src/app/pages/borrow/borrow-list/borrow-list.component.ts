@@ -11,6 +11,7 @@ import { Color } from '@enums/color.enum';
 
 import { RentalService } from '@services/api/rental.service';
 import { RentalStatusService } from '@services/api/rental-status.service';
+import { UserService } from '@services/api/user.service';
 
 import { RwdHelper } from '@utils/rwd-helper';
 
@@ -40,17 +41,30 @@ export class BorrowListComponent implements OnInit {
   isRental = false;
   rentals: Rental[] = [];
   rentalStatusTypes: SelectType[] = [];
+  notCompensate = false;
 
   constructor(
     private rentalService: RentalService,
     private rentalStatusService: RentalStatusService,
+    private userService: UserService,
     private dialog: MatDialog,
     private router: Router
   ) {}
 
   ngOnInit(): void {
+    this.getUserInfo();
     this.getRentalStatusType();
     this.updateRentals(false);
+  }
+
+  getUserInfo(): void {
+    this.userService.getUser().subscribe((user) => {
+      if (!user) {
+        return;
+      }
+
+      this.notCompensate = user.notCompensate;
+    });
   }
 
   updateRentals(isRental: boolean): void {
@@ -113,6 +127,10 @@ export class BorrowListComponent implements OnInit {
   }
 
   getBorrowButton(status: BorrowStatus): StatusButton[] {
+    if (this.notCompensate && status >= 9) {
+      return [new StatusButton('賠償', Color.red)];
+    }
+
     switch (status) {
       case BorrowStatus.notAgree:
         return [new StatusButton('取消交易', Color.red)];
@@ -153,7 +171,8 @@ export class BorrowListComponent implements OnInit {
   clickStatusButton(text: string, rentalId: number): void {
     switch (text) {
       case '付款':
-        return this.openPaymentDialog(rentalId);
+      case '賠償':
+        return this.openPaymentDialog(text, rentalId);
       case '扣除手續費終止交易':
         return this.openTerminalDialog(rentalId);
       case '評價租方':
@@ -204,10 +223,11 @@ export class BorrowListComponent implements OnInit {
     });
   }
 
-  openPaymentDialog(rentalId: number): void {
+  openPaymentDialog(title: string, rentalId: number): void {
     const dialogRef = this.dialog.open(BorrowPaymentDialogComponent, {
       width: RwdHelper.isMobile() ? '100%' : '50%',
       data: {
+        title,
         rentalId,
       },
     });

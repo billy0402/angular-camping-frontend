@@ -9,6 +9,7 @@ import { UserService } from '@services/api/user.service';
 import { RentalStatusService } from '@services/api/rental-status.service';
 
 interface BorrowPaymentDialog {
+  title: string;
   rentalId: number;
 }
 
@@ -73,12 +74,18 @@ export class BorrowPaymentDialogComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.rentalStatusService
-      .payRental(this.data.rentalId, this.form.value)
-      .subscribe((isSuccess) => {
-        if (isSuccess) {
-          this.dialogRef.close();
-        }
-      });
+    const action =
+      this.data.title === '賠償'
+        ? this.userService.userCompensate(this.form.value)
+        : this.rentalStatusService.payRental(
+            this.data.rentalId,
+            this.form.value
+          );
+
+    action.subscribe((isSuccess) => {
+      if (isSuccess) {
+        this.dialogRef.close();
+      }
+    });
   }
 }

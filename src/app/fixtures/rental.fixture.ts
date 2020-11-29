@@ -33,3 +33,8 @@ export const rental: Rental = {
     },
   ],
 };
+
+export const rentals: Rental[] = new Array(11).fill({}).map((e, i) => ({
+  ...rental,
+  status: i,
+}));
