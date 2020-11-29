@@ -16,7 +16,7 @@ interface ImageCropperDialogData {
 })
 export class ImageCropperDialogComponent implements OnInit {
   imageChangedEvent!: Event;
-  croppedImage: string = '';
+  croppedImage = '';
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: ImageCropperDialogData,

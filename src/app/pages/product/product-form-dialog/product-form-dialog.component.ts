@@ -76,8 +76,8 @@ export class ProductFormDialogComponent implements OnInit {
     };
   }
 
-  updateFormValue(data: Product) {
-    const productEdit = this.transformDetailToEdit(data);
+  updateFormValue(product: Product): void {
+    const productEdit = this.transformDetailToEdit(product);
     this.form.patchValue(productEdit);
     this.productImages = this.imageToSliderObject(this.data.product.imageArray);
   }
@@ -90,7 +90,7 @@ export class ProductFormDialogComponent implements OnInit {
     return images.map((image) => new SliderImage(image.url));
   }
 
-  updateImageIndex(arrow: string) {
+  updateImageIndex(arrow: string): void {
     if (arrow === 'previous') {
       this.imageIndex -= 1;
     } else if (arrow === 'next') {
@@ -103,7 +103,7 @@ export class ProductFormDialogComponent implements OnInit {
       width: '70%',
       data: {
         image: isEdit ? this.productImages[this.imageIndex].image : '',
-        isEdit: isEdit,
+        isEdit,
       },
     });
 

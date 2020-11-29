@@ -9,6 +9,8 @@ import { ProductGroupDetail } from '@models/product/product-group.model';
 
 import { RentalService } from '@services/api/rental.service';
 
+import { DateHelper } from '@utils/date-helper';
+
 interface BorrowCreateDialogData {
   productGroupId: number;
   productGroup: ProductGroupDetail;
@@ -72,23 +74,20 @@ export class BorrowCreateDialogComponent implements OnInit {
     return range.slice(start, end + 1);
   }
 
-  dateFormat(value: Date): string {
-    const date = new Date(value as Date);
-    return moment(date).format('YYYY/MM/DD');
-  }
-
   onSubmit(): void {
-    const data = {
-      productGroupId: this.data.productGroupId,
-      borrowStartDate: this.dateFormat(this.form.value.borrowStartDate),
-      borrowEndDate: this.dateFormat(this.form.value.borrowEndDate),
-    };
-
-    this.rentalService.addRental(data).subscribe((isSuccess) => {
-      if (isSuccess) {
-        this.dialogRef.close();
-        this.router.navigate(['borrow']);
-      }
-    });
+    this.rentalService
+      .addRental({
+        productGroupId: this.data.productGroupId,
+        borrowStartDate: DateHelper.toDateString(
+          this.form.value.borrowStartDate
+        ),
+        borrowEndDate: DateHelper.toDateString(this.form.value.borrowEndDate),
+      })
+      .subscribe((isSuccess) => {
+        if (isSuccess) {
+          this.dialogRef.close();
+          this.router.navigate(['borrow']);
+        }
+      });
   }
 }

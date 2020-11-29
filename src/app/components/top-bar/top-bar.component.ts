@@ -9,6 +9,8 @@ import { AccountService } from '@services/account.service';
 import { NotificationService } from '@services/api/notification.service';
 import { SpinnerService } from '@services/ui/spinner.service';
 
+import { RwdHelper } from '@utils/rwd-helper';
+
 @Component({
   selector: 'app-top-bar',
   templateUrl: './top-bar.component.html',
@@ -38,7 +40,7 @@ export class TopBarComponent implements OnInit {
   }
 
   getBannerImage(): string {
-    const mobile = document.body.scrollWidth < 600 ? '-mobile' : '';
+    const mobile = RwdHelper.isPhone() ? '-mobile' : '';
     return `assets/image/banner${mobile}.png`;
   }
 

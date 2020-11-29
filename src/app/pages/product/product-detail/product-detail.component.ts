@@ -7,6 +7,8 @@ import { ProductGroupDetail } from '@models/product/product-group.model';
 
 import { ProductService } from '@services/api/product.service';
 
+import { RwdHelper } from '@utils/rwd-helper';
+
 import { BorrowCreateDialogComponent } from '@pages/borrow/borrow-create-dialog/borrow-create-dialog.component';
 
 @Component({
@@ -42,7 +44,7 @@ export class ProductDetailComponent implements OnInit {
     });
   }
 
-  toUserProduct() {
+  toUserProduct(): void {
     this.router.navigate(
       ['user', this.productGroup.productOwnerAccount, 'product'],
       {
@@ -55,7 +57,7 @@ export class ProductDetailComponent implements OnInit {
 
   openDialog(): void {
     this.dialog.open(BorrowCreateDialogComponent, {
-      width: document.body.scrollWidth <= 960 ? '100%' : '50%',
+      width: RwdHelper.isMobile() ? '100%' : '50%',
       data: {
         productGroupId: this.productGroupId,
         productGroup: this.productGroup,

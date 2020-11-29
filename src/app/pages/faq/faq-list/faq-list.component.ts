@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { FaqCreateDialogComponent } from '@pages/faq/faq-create-dialog/faq-create-dialog.component';
 
-import { faqs } from '../../../fixtures/faq.fixture';
+import { faqs } from '@fixtures/faq.fixture';
 
 @Component({
   selector: 'app-faq-list',

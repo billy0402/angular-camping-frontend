@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import * as moment from 'moment';
-
 import { ExperienceType } from '@models/user/experience-type.model';
 
 import { UserService } from '@services/api/user.service';
+
+import { DateHelper } from '@utils/date-helper';
 
 @Component({
   selector: 'app-register',
@@ -55,13 +55,10 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit(): void {
-    const birthday = this.form.value.birthday as Date;
-    const formatBirthday = moment(birthday).format('YYYY/MM/DD');
-
     this.userService
       .addUser({
         ...this.form.value,
-        birthday: formatBirthday,
+        birthday: DateHelper.toDateString(this.form.value.birthday),
       })
       .subscribe((isSuccess) => {
         if (isSuccess) {

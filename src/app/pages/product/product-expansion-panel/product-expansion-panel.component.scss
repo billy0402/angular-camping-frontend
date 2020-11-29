@@ -21,7 +21,6 @@ mat-expansion-panel {
   }
 
   mat-expansion-panel-header {
-    margin-bottom: 16px;
     border-bottom: 1px solid $primary-color;
     border-radius: 0;
   }
@@ -33,6 +32,10 @@ mat-expansion-panel {
       background-color: $primary-color;
       color: $font-white;
     }
+  }
+
+  .product {
+    margin-top: 16px;
   }
 }
 

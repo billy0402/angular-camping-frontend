@@ -14,6 +14,8 @@ import { AccountService } from '@services/account.service';
 import { RememberMeService } from '@services/remember-me.service';
 import { SnakeBarService } from '@services/ui/snake-bar.service';
 
+import { RwdHelper } from '@utils/rwd-helper';
+
 import { ForgetPasswordDialogComponent } from '@pages/auth/forget-password-dialog/forget-password-dialog.component';
 
 @Component({
@@ -50,8 +52,8 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  changeRememberMe(e: MatCheckboxChange): void {
-    this.rememberMeService.isRememberMe = e.checked;
+  changeRememberMe(event: MatCheckboxChange): void {
+    this.rememberMeService.isRememberMe = event.checked;
   }
 
   onSubmit(): void {
@@ -59,9 +61,9 @@ export class LoginComponent implements OnInit {
 
     this.userService.login(this.form.value).subscribe(
       (res: HttpResponse<ApiModel<object>>) => {
-        const result = res.headers.get('X-Auth-Token') || '';
-        if (result) {
-          this.authService.setToken(result);
+        const token = res.headers.get('X-Auth-Token') || '';
+        if (token) {
+          this.authService.setToken(token);
           this.accountService.account = this.form.value.account;
           this.authService.isAuth = true;
 
@@ -75,7 +77,7 @@ export class LoginComponent implements OnInit {
   }
 
   redirectPreviousPage(): void {
-    const redirectUrl = this.route.snapshot.queryParams['redirectUrl'];
+    const redirectUrl = this.route.snapshot.queryParams.redirectUrl;
     this.router
       .navigateByUrl(redirectUrl)
       .then(() => {
@@ -86,7 +88,7 @@ export class LoginComponent implements OnInit {
 
   openDialog(): void {
     this.dialog.open(ForgetPasswordDialogComponent, {
-      width: document.body.scrollWidth <= 960 ? '100%' : '50%',
+      width: RwdHelper.isMobile() ? '100%' : '50%',
     });
   }
 }

@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { MatDialog } from '@angular/material/dialog';
-import * as moment from 'moment';
 
 import { SelectType } from '@models/select-type.model';
 import { ProductGroupDetail } from '@models/product/product-group.model';
@@ -12,6 +11,8 @@ import { City } from '@models/city/city.model';
 
 import { ProductService } from '@services/api/product.service';
 import { CityService } from '@services/api/city.service';
+
+import { DateHelper } from '@utils/date-helper';
 
 import { ImageCropperDialogComponent } from '@components/image-cropper-dialog/image-cropper-dialog.component';
 import { ProductFormDialogComponent } from '@pages/product/product-form-dialog/product-form-dialog.component';
@@ -24,7 +25,7 @@ import { ProductFormDialogComponent } from '@pages/product/product-form-dialog/p
 export class ProductFormComponent implements OnInit {
   form!: FormGroup;
   productId!: number;
-  coverImage: string = '';
+  coverImage = '';
   products: Product[] = [];
   cities: string[] = [];
   areas: City[] = [];
@@ -36,6 +37,7 @@ export class ProductFormComponent implements OnInit {
     private productService: ProductService,
     private cityService: CityService,
     private route: ActivatedRoute,
+    private router: Router,
     private dialog: MatDialog
   ) {}
 
@@ -81,23 +83,20 @@ export class ProductFormComponent implements OnInit {
     });
   }
 
-  updateFormValue(data: ProductGroupDetail): void {
+  updateFormValue(productGroup: ProductGroupDetail): void {
     this.form.patchValue({
-      name: data.name,
-      borrowStartDate: new Date(data.borrowStartDate),
-      borrowEndDate: new Date(data.borrowEndDate),
-      cityName: data.city.name,
-      cityId: data.city.id,
-      price: data.price,
-      coverImage: data.coverImage,
-      bankAccount: data.bankAccount,
-      productArray: data.productArray.map((product: Product) =>
+      ...productGroup,
+      borrowStartDate: new Date(productGroup.borrowStartDate),
+      borrowEndDate: new Date(productGroup.borrowEndDate),
+      cityName: productGroup.city.name,
+      cityId: productGroup.city.id,
+      productArray: productGroup.productArray.map((product: Product) =>
         this.transformDetailToEdit(product)
       ),
     });
     this.updateAreas();
 
-    this.products = data.productArray;
+    this.products = productGroup.productArray;
   }
 
   transformDetailToEdit(product: Product): ProductEdit {
@@ -135,7 +134,7 @@ export class ProductFormComponent implements OnInit {
       width: '70%',
       data: {
         image: isEdit ? this.form.value.coverImage : '',
-        isEdit: isEdit,
+        isEdit,
       },
     });
 
@@ -181,21 +180,22 @@ export class ProductFormComponent implements OnInit {
     this.products.splice(index, 1);
   }
 
-  dateFormatter(value: Date): string {
-    const date = new Date(value as Date);
-    return moment(date).format('YYYY/MM/DD');
-  }
-
   onSubmit(): void {
     const data = {
       ...this.form.value,
-      borrowStartDate: this.dateFormatter(this.form.value.borrowStartDate),
-      borrowEndDate: this.dateFormatter(this.form.value.borrowEndDate),
+      borrowStartDate: DateHelper.toDateString(this.form.value.borrowStartDate),
+      borrowEndDate: DateHelper.toDateString(this.form.value.borrowEndDate),
     };
 
     const action = this.isEdit
       ? this.productService.updateProductGroup(this.productId, data)
       : this.productService.addProductGroup(data);
-    action.subscribe();
+    action.subscribe((isSuccess) => {
+      if (!isSuccess) {
+        return;
+      }
+
+      this.router.navigate(['user', 'product']);
+    });
   }
 }

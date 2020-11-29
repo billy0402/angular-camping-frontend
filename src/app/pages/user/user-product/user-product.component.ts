@@ -13,8 +13,8 @@ import { ProductService } from '@services/api/product.service';
   styleUrls: ['./user-product.component.scss'],
 })
 export class UserProductComponent implements OnInit {
-  account: string = '';
-  nickName: string = '';
+  account = '';
+  nickName = '';
   comment: number | null = null;
   badRecords: BadRecord[] = [];
   productGroups: ProductGroup[] = [];

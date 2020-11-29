@@ -12,6 +12,8 @@ import { Color } from '@enums/color.enum';
 import { RentalService } from '@services/api/rental.service';
 import { RentalStatusService } from '@services/api/rental-status.service';
 
+import { RwdHelper } from '@utils/rwd-helper';
+
 import { FoolProofDialogComponent } from '@components/fool-proof-dialog/fool-proof-dialog.component';
 import { BorrowPaymentDialogComponent } from '@pages/borrow/borrow-payment-dialog/borrow-payment-dialog.component';
 import { BorrowTerminalDialogComponent } from '@pages/borrow/borrow-terminal-dialog/borrow-terminal-dialog.component';
@@ -162,16 +164,16 @@ export class BorrowListComponent implements OnInit {
     }
   }
 
-  trackByIndex(index: number, obj: StatusButton) {
+  trackByIndex(index: number, obj: StatusButton): number {
     return index;
   }
 
   openFoolProofDialog(title: string, rentalId: number): void {
     const dialogRef = this.dialog.open(FoolProofDialogComponent, {
-      width: document.body.scrollWidth <= 960 ? '100%' : '50%',
+      width: RwdHelper.isMobile() ? '100%' : '50%',
       data: {
         icon: title.startsWith('同意') ? 'check_circle' : 'cancel',
-        title: title,
+        title,
       },
     });
 
@@ -196,35 +198,49 @@ export class BorrowListComponent implements OnInit {
       if (!action) {
         return;
       }
-      action.subscribe();
+      action.subscribe(() => {
+        window.location.reload();
+      });
     });
   }
 
   openPaymentDialog(rentalId: number): void {
-    this.dialog.open(BorrowPaymentDialogComponent, {
-      width: document.body.scrollWidth <= 960 ? '100%' : '50%',
+    const dialogRef = this.dialog.open(BorrowPaymentDialogComponent, {
+      width: RwdHelper.isMobile() ? '100%' : '50%',
       data: {
-        rentalId: rentalId,
+        rentalId,
       },
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      window.location.reload();
     });
   }
 
   openTerminalDialog(rentalId: number): void {
-    this.dialog.open(BorrowTerminalDialogComponent, {
-      width: document.body.scrollWidth <= 960 ? '100%' : '50%',
+    const dialogRef = this.dialog.open(BorrowTerminalDialogComponent, {
+      width: RwdHelper.isMobile() ? '100%' : '50%',
       data: {
-        rentalId: rentalId,
+        rentalId,
       },
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      window.location.reload();
     });
   }
 
   openCommentDialog(title: string, rentalId: number): void {
-    this.dialog.open(BorrowCommentDialogComponent, {
-      width: document.body.scrollWidth <= 960 ? '100%' : '50%',
+    const dialogRef = this.dialog.open(BorrowCommentDialogComponent, {
+      width: RwdHelper.isMobile() ? '100%' : '50%',
       data: {
-        title: title,
-        rentalId: rentalId,
+        title,
+        rentalId,
       },
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      window.location.reload();
     });
   }
 }

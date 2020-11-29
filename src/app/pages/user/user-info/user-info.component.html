@@ -159,7 +159,7 @@
           mat-flat-button
           type="button"
           color="accent"
-          *ngIf="!isEditable"
+          *ngIf="!isEdit"
           (click)="openDialog()"
           fxFlex="30"
           fxFlex.lt-sm="100"
@@ -169,18 +169,18 @@
         <button
           mat-flat-button
           type="button"
-          [color]="!isEditable ? 'accent' : 'warn'"
-          (click)="onEditClick()"
+          [color]="!isEdit ? 'accent' : 'warn'"
+          (click)="changeEditable()"
           fxFlex="30"
           fxFlex.lt-sm="100"
         >
-          {{ !isEditable ? "編輯" : "取消" }}
+          {{ !isEdit ? "編輯" : "取消" }}
         </button>
         <button
           mat-flat-button
           type="submit"
           color="accent"
-          *ngIf="isEditable"
+          *ngIf="isEdit"
           fxFlex="30"
           fxFlex.lt-sm="100"
         >

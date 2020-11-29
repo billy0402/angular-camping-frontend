@@ -65,7 +65,7 @@ export class ProductExpansionPanelComponent implements OnInit {
         return;
       }
 
-      this.editProduct.emit({ index: index, product: data });
+      this.editProduct.emit({ index, product: data });
     });
   }
 

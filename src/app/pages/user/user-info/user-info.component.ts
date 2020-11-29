@@ -9,6 +9,8 @@ import { ExperienceType } from '@models/user/experience-type.model';
 
 import { UserService } from '@services/api/user.service';
 
+import { RwdHelper } from '@utils/rwd-helper';
+
 import { ChangePasswordDialogComponent } from '@pages/auth/change-password-dialog/change-password-dialog.component';
 
 @Component({
@@ -21,7 +23,7 @@ export class UserInfoComponent implements OnInit {
   badRecords: BadRecord[] = [];
   experienceTypes: ExperienceType[] = [];
   form!: FormGroup;
-  isEditable = false;
+  isEdit = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -55,13 +57,10 @@ export class UserInfoComponent implements OnInit {
     });
   }
 
-  updateFormValue(data: User): void {
-    this.form.setValue({
-      nickName: data.nickName,
-      experience: data.experience.toString(),
-      email: data.email,
-      cellPhone: data.cellPhone,
-      address: data.address,
+  updateFormValue(user: User): void {
+    this.form.patchValue({
+      ...user,
+      experience: user.experience.toString(),
     });
   }
 
@@ -87,9 +86,9 @@ export class UserInfoComponent implements OnInit {
     });
   }
 
-  onEditClick(): void {
-    this.isEditable = !this.isEditable;
-    if (this.isEditable) {
+  changeEditable(): void {
+    this.isEdit = !this.isEdit;
+    if (this.isEdit) {
       this.form.enable();
     } else {
       this.form.disable();
@@ -99,14 +98,14 @@ export class UserInfoComponent implements OnInit {
   onSubmit(): void {
     this.userService.updateUser(this.form.value).subscribe((isSuccess) => {
       if (isSuccess) {
-        this.isEditable = false;
+        this.changeEditable();
       }
     });
   }
 
   openDialog(): void {
     this.dialog.open(ChangePasswordDialogComponent, {
-      width: document.body.scrollWidth <= 960 ? '100%' : '50%',
+      width: RwdHelper.isMobile() ? '100%' : '50%',
     });
   }
 }

@@ -28,7 +28,7 @@ export class ProductListComponent implements OnInit {
     this.router.navigate(['product', id, 'edit']);
   }
 
-  deleteProductGroup(id: number) {
+  deleteProductGroup(id: number): void {
     this.productService.deleteProductGroup(id).subscribe();
   }
 }

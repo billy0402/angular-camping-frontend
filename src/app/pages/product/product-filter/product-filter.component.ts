@@ -7,7 +7,6 @@ import {
   MatAutocompleteSelectedEvent,
 } from '@angular/material/autocomplete';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import * as moment from 'moment';
 
 import { SelectType } from '@models/select-type.model';
 import { ProductGroup } from '@models/product/product-group.model';
@@ -15,6 +14,8 @@ import { City } from '@models/city/city.model';
 
 import { ProductService } from '@services/api/product.service';
 import { CityService } from '@services/api/city.service';
+
+import { DateHelper } from '@utils/date-helper';
 
 @Component({
   selector: 'app-product-filter',
@@ -31,7 +32,6 @@ export class ProductFilterComponent implements OnInit {
   productGroups: ProductGroup[] = [];
 
   chipTypes: SelectType[] = [];
-  visible = true;
   selectable = true;
   removable = true;
   addOnBlur = true;
@@ -57,7 +57,7 @@ export class ProductFilterComponent implements OnInit {
     this.getProductGroups();
   }
 
-  getProductTypes() {
+  getProductTypes(): void {
     this.productService.getProductTypes().subscribe((productTypes) => {
       if (!productTypes) {
         return;
@@ -135,8 +135,7 @@ export class ProductFilterComponent implements OnInit {
       }
 
       if (value instanceof Date) {
-        const date = new Date(value as Date);
-        value = moment(date).format('YYYY/MM/DD');
+        value = DateHelper.toDateString(value);
       }
 
       params += `${key}=${value}&`;

@@ -164,7 +164,9 @@
               </mat-radio-group>
             </div>
             <div class="radio-form-field-error">
-              <mat-error>此欄位為必填</mat-error>
+              <mat-error *ngIf="form.controls.gender.hasError('required')">
+                此欄位為必填
+              </mat-error>
             </div>
 
             <mat-form-field
