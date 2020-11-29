@@ -1,4 +1,4 @@
-export interface Experience {
+export interface ExperienceType {
   id: string;
   display: string;
 }

@@ -1,4 +1,4 @@
-export interface ProductBrand {
+export interface SelectType {
   id: number;
   name: string;
 }

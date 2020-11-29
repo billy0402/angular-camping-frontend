@@ -19,11 +19,11 @@ export class SpinnerService {
     return this.isShowSubject$.pipe(shareReplay(1));
   }
 
-  show() {
+  show(): void {
     this.isShowSubject$.next(true);
   }
 
-  hide() {
+  hide(): void {
     this.isShowSubject$.next(false);
   }
 }

@@ -30,7 +30,7 @@ export class HttpService {
   post<T>(url: string, data: object): Observable<ApiModel<T>> {
     if (url === '/login') {
       // @ts-ignore
-      this.httpOptions['observe'] = 'response' as 'response';
+      this.httpOptions.observe = 'response' as 'response';
     }
 
     return this.http.post<ApiModel<T>>(

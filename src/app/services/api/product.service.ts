@@ -2,19 +2,14 @@ import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
-import { ApiModel } from '@models/api-model.model';
+import { SelectType } from '@models/select-type.model';
 import {
   ProductGroup,
   ProductGroupDetail,
 } from '@models/product/product-group.model';
-import {
-  ProductSubType,
-  ProductType,
-} from '@models/product/product-type.model';
 import { ProductGroupFilter } from '@models/product/product-group-filter.model';
-import { ProductBrand } from '@models/product/product-brand.model';
 
-import { HttpService } from '@services/http.service';
+import { HttpWithRxService } from '@services/http-with-rx.service';
 
 @Injectable({
   providedIn: 'root',
@@ -22,51 +17,53 @@ import { HttpService } from '@services/http.service';
 export class ProductService {
   baseUrl = '/product-group';
 
-  constructor(private httpService: HttpService) {}
+  constructor(private httpWithRxService: HttpWithRxService) {}
 
-  getProductGroups(params: string): Observable<ApiModel<ProductGroup[]>> {
-    return this.httpService.get<ProductGroup[]>(`${this.baseUrl}?${params}`);
+  getProductGroups(params: string): Observable<ProductGroup[]> {
+    return this.httpWithRxService.get<ProductGroup[]>(
+      `${this.baseUrl}?${params}`
+    );
   }
 
-  getProductGroupsByUser(
-    account: string
-  ): Observable<ApiModel<ProductGroup[]>> {
-    return this.httpService.get<ProductGroup[]>(
+  getProductGroupsByUser(account: string): Observable<ProductGroup[]> {
+    return this.httpWithRxService.get<ProductGroup[]>(
       `${this.baseUrl}/user/${account}`
     );
   }
 
-  getProductGroup(id: number): Observable<ApiModel<ProductGroupDetail>> {
-    return this.httpService.get<ProductGroupDetail>(`${this.baseUrl}/${id}`);
+  getProductGroup(id: number): Observable<ProductGroupDetail> {
+    return this.httpWithRxService.get<ProductGroupDetail>(
+      `${this.baseUrl}/${id}`
+    );
   }
 
-  getProductGroupForEdit(id: number): Observable<ApiModel<ProductGroupDetail>> {
-    return this.httpService.get<ProductGroupDetail>(
+  getProductGroupForEdit(id: number): Observable<ProductGroupDetail> {
+    return this.httpWithRxService.get<ProductGroupDetail>(
       `${this.baseUrl}/update/${id}`
     );
   }
 
-  addProductGroup(data: object): Observable<ApiModel<string>> {
-    return this.httpService.post<string>(this.baseUrl, data);
+  addProductGroup(data: object): Observable<boolean> {
+    return this.httpWithRxService.post<string>(this.baseUrl, data);
   }
 
-  updateProductGroup(id: number, data: object): Observable<ApiModel<string>> {
-    return this.httpService.patch<string>(`${this.baseUrl}/${id}`, data);
+  updateProductGroup(id: number, data: object): Observable<boolean> {
+    return this.httpWithRxService.patch<string>(`${this.baseUrl}/${id}`, data);
   }
 
-  deleteProductGroup(id: number): Observable<ApiModel<string>> {
-    return this.httpService.delete<string>(`${this.baseUrl}/${id}`);
+  deleteProductGroup(id: number): Observable<boolean> {
+    return this.httpWithRxService.delete<string>(`${this.baseUrl}/${id}`);
   }
 
-  addProductGroupComment(
-    id: number,
-    data: object
-  ): Observable<ApiModel<string>> {
-    return this.httpService.post<string>(`${this.baseUrl}/${id}/comment`, data);
+  addProductGroupComment(id: number, data: object): Observable<boolean> {
+    return this.httpWithRxService.post<string>(
+      `${this.baseUrl}/${id}/comment`,
+      data
+    );
   }
 
-  updateProducts(groupId: number, data: object): Observable<ApiModel<string>> {
-    return this.httpService.patch<string>(
+  updateProducts(groupId: number, data: object): Observable<boolean> {
+    return this.httpWithRxService.patch<string>(
       `${this.baseUrl}/${groupId}/product`,
       data
     );
@@ -76,39 +73,43 @@ export class ProductService {
     groupId: number,
     productId: number,
     data: object
-  ): Observable<ApiModel<string>> {
-    return this.httpService.patch<string>(
+  ): Observable<boolean> {
+    return this.httpWithRxService.patch<string>(
       `${this.baseUrl}/${groupId}/product/${productId}`,
       data
     );
   }
 
-  deleteProduct(productId: number): Observable<ApiModel<string>> {
-    return this.httpService.delete<string>(
+  deleteProduct(productId: number): Observable<boolean> {
+    return this.httpWithRxService.delete<string>(
       `${this.baseUrl}/product/${productId}`
     );
   }
 
-  deleteProductImage(imageId: number): Observable<ApiModel<string>> {
-    return this.httpService.delete<string>(
+  deleteProductImage(imageId: number): Observable<boolean> {
+    return this.httpWithRxService.delete<string>(
       `${this.baseUrl}/product/image/${imageId}`
     );
   }
 
-  getProductTypes(): Observable<ApiModel<ProductType[]>> {
-    return this.httpService.get<ProductType[]>(`${this.baseUrl}/product/type`);
+  getProductTypes(): Observable<SelectType[]> {
+    return this.httpWithRxService.get<SelectType[]>(
+      `${this.baseUrl}/product/type`
+    );
   }
 
-  getProductFilter(): Observable<ApiModel<ProductGroupFilter>> {
-    return this.httpService.get<ProductGroupFilter>(`${this.baseUrl}/filter`);
+  getProductFilter(): Observable<ProductGroupFilter> {
+    return this.httpWithRxService.get<ProductGroupFilter>(
+      `${this.baseUrl}/filter`
+    );
   }
 
-  getProductBrands(): Observable<ApiModel<ProductBrand[]>> {
-    return this.httpService.get<ProductBrand[]>(`${this.baseUrl}/brand`);
+  getProductBrands(): Observable<SelectType[]> {
+    return this.httpWithRxService.get<SelectType[]>(`${this.baseUrl}/brand`);
   }
 
-  getProductBrandTypes(brandId: number): Observable<ApiModel<ProductType[]>> {
-    return this.httpService.get<ProductType[]>(
+  getProductBrandTypes(brandId: number): Observable<SelectType[]> {
+    return this.httpWithRxService.get<SelectType[]>(
       `${this.baseUrl}/type?brand=${brandId}`
     );
   }
@@ -116,8 +117,8 @@ export class ProductService {
   getProductBrandSubTypes(
     brandId: number,
     typeId: number
-  ): Observable<ApiModel<ProductSubType[]>> {
-    return this.httpService.get<ProductSubType[]>(
+  ): Observable<SelectType[]> {
+    return this.httpWithRxService.get<SelectType[]>(
       `${this.baseUrl}/sub-type?brand=${brandId}&type=${typeId}`
     );
   }
@@ -126,8 +127,8 @@ export class ProductService {
     brandId: number,
     typeId: number,
     subTypeId: number
-  ): Observable<ApiModel<{ price: number }>> {
-    return this.httpService.get<{ price: number }>(
+  ): Observable<{ price: number }> {
+    return this.httpWithRxService.get<{ price: number }>(
       `${this.baseUrl}/recommend-price?brand=${brandId}&type=${typeId}&subType=${subTypeId}`
     );
   }

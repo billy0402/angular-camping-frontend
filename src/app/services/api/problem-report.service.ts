@@ -2,10 +2,9 @@ import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
-import { ApiModel } from '@models/api-model.model';
 import { ProblemReport } from '@models/problem-report/problem-report.model';
 
-import { HttpService } from '@services/http.service';
+import { HttpWithRxService } from '@services/http-with-rx.service';
 
 @Injectable({
   providedIn: 'root',
@@ -13,25 +12,22 @@ import { HttpService } from '@services/http.service';
 export class ProblemReportService {
   baseUrl = '/problem-report';
 
-  constructor(private httpService: HttpService) {}
+  constructor(private httpWithRxService: HttpWithRxService) {}
 
-  getProblemReports(): Observable<ApiModel<ProblemReport[]>> {
-    return this.httpService.get<ProblemReport[]>(this.baseUrl);
+  getProblemReports(): Observable<ProblemReport[]> {
+    return this.httpWithRxService.get<ProblemReport[]>(this.baseUrl);
   }
 
-  addProblemReport(data: object): Observable<ApiModel<string>> {
-    return this.httpService.post<string>(this.baseUrl, data);
+  addProblemReport(data: object): Observable<boolean> {
+    return this.httpWithRxService.post<string>(this.baseUrl, data);
   }
 
-  handleProblemReport(id: number): Observable<ApiModel<string>> {
-    return this.httpService.patch<string>(`${this.baseUrl}/${id}/handle`, {});
+  handleProblemReport(id: number): Observable<boolean> {
+    return this.httpWithRxService.patch<string>(`${this.baseUrl}/${id}/handle`);
   }
 
-  handleProblemReportResult(
-    id: number,
-    data: object
-  ): Observable<ApiModel<string>> {
-    return this.httpService.patch<string>(
+  handleProblemReportResult(id: number, data: object): Observable<boolean> {
+    return this.httpWithRxService.patch<string>(
       `${this.baseUrl}/${id}/handle/result`,
       data
     );

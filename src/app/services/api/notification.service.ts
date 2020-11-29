@@ -2,10 +2,9 @@ import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
-import { ApiModel } from '@models/api-model.model';
 import { Notification } from '@models/notification/notification.model';
 
-import { HttpService } from '@services/http.service';
+import { HttpWithRxService } from '@services/http-with-rx.service';
 
 @Injectable({
   providedIn: 'root',
@@ -13,14 +12,14 @@ import { HttpService } from '@services/http.service';
 export class NotificationService {
   baseUrl = '/notification';
 
-  constructor(private httpService: HttpService) {}
+  constructor(private httpWithRxService: HttpWithRxService) {}
 
-  getNotifications(): Observable<ApiModel<Notification[]>> {
-    return this.httpService.get<Notification[]>(this.baseUrl);
+  getNotifications(): Observable<Notification[]> {
+    return this.httpWithRxService.get<Notification[]>(this.baseUrl);
   }
 
-  getNotReadCount(): Observable<ApiModel<{ count: number }>> {
-    return this.httpService.get<{ count: number }>(
+  getNotReadCount(): Observable<{ count: number }> {
+    return this.httpWithRxService.get<{ count: number }>(
       `${this.baseUrl}/not-read-count`
     );
   }

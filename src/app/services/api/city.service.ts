@@ -2,10 +2,9 @@ import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
-import { ApiModel } from '@models/api-model.model';
 import { City } from '@models/city/city.model';
 
-import { HttpService } from '@services/http.service';
+import { HttpWithRxService } from '@services/http-with-rx.service';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +15,7 @@ export class CityService {
   private _cities: City[] = [];
   private _selectCity: string = '';
 
-  constructor(private httpService: HttpService) {}
+  constructor(private httpWithRxService: HttpWithRxService) {}
 
   set cities(value: City[]) {
     this._cities = value;
@@ -35,7 +34,7 @@ export class CityService {
     return this._cities.filter((city) => city.name === this._selectCity);
   }
 
-  getCity(): Observable<ApiModel<City[]>> {
-    return this.httpService.get<City[]>(this.baseUrl);
+  getCity(): Observable<City[]> {
+    return this.httpWithRxService.get<City[]>(this.baseUrl);
   }
 }
