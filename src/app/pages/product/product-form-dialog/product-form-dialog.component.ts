@@ -41,6 +41,7 @@ export class ProductFormDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
+      id: [null],
       name: [null, [Validators.required]],
       type: [null, [Validators.required]],
       count: [null, [Validators.required]],

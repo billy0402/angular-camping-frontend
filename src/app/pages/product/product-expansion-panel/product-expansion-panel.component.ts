@@ -10,6 +10,9 @@ import { SliderImage } from '@models/product/slider-image.model';
 
 import { ProductService } from '@services/api/product.service';
 
+import { RwdHelper } from '@utils/rwd-helper';
+
+import { FoolProofDialogComponent } from '@components/fool-proof-dialog/fool-proof-dialog.component';
 import { ProductFormDialogComponent } from '@pages/product/product-form-dialog/product-form-dialog.component';
 
 @Component({
@@ -71,6 +74,19 @@ export class ProductExpansionPanelComponent implements OnInit {
 
   clickDelete(index: number): void {
     this.isClickButton = true;
-    this.deleteProduct.emit(index);
+
+    const dialogRef = this.dialog.open(FoolProofDialogComponent, {
+      width: RwdHelper.isMobile() ? '100%' : '50%',
+      data: {
+        icon: 'delete_forever',
+        title: '刪除物品',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.deleteProduct.emit(index);
+      }
+    });
   }
 }
