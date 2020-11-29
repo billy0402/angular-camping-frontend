@@ -26,6 +26,7 @@
       "@modules/*": ["src/app/modules/*"],
       "@pages/*": ["src/app/pages/*"],
       "@services/*": ["src/app/services/*"],
+      "@utils/*": ["src/app/utils/*"],
       "@environments/*": ["src/environments/*"]
     }
   }
