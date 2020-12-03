@@ -101,7 +101,7 @@ export class ProductFormDialogComponent implements OnInit {
 
   openImageDialog(isEdit: boolean): void {
     const dialogRef = this.dialog.open(ImageCropperDialogComponent, {
-      width: '70%',
+      width: '100%',
       data: {
         image: isEdit ? this.productImages[this.imageIndex].image : '',
         isEdit,

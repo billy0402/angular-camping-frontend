@@ -131,7 +131,7 @@ export class ProductFormComponent implements OnInit {
 
   openCoverImageDialog(isEdit: boolean): void {
     const dialogRef = this.dialog.open(ImageCropperDialogComponent, {
-      width: '70%',
+      width: '100%',
       data: {
         image: isEdit ? this.form.value.coverImage : '',
         isEdit,
@@ -157,7 +157,7 @@ export class ProductFormComponent implements OnInit {
 
   openProductDialog(): void {
     const dialogRef = this.dialog.open(ProductFormDialogComponent, {
-      width: '80%',
+      width: '100%',
     });
 
     dialogRef.afterClosed().subscribe((data) => {

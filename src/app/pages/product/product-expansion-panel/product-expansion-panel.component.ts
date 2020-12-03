@@ -56,8 +56,7 @@ export class ProductExpansionPanelComponent implements OnInit {
     this.isClickButton = true;
 
     const dialogRef = this.dialog.open(ProductFormDialogComponent, {
-      width: '80%',
-      height: '80%',
+      width: '100%',
       data: {
         product: this.products[index],
       },
