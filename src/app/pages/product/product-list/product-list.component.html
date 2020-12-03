@@ -1,7 +1,9 @@
 <div *ngIf="productGroups.length > 0; else emptyProductGroups">
   <div class="product" fxLayout="row wrap" fxLayoutAlign="space-between">
     <div
-      fxFlex.gt-xs="32"
+      fxFlex="32"
+      fxFlex.lt-md="48"
+      fxFlex.lt-sm="100"
       *ngFor="
         let productGroup of productGroups
           | paginate: { itemsPerPage: 10, currentPage: page }

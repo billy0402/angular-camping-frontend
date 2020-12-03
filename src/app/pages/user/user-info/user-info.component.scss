@@ -45,6 +45,8 @@ mat-card-title {
     .not-compensate {
       padding: 5px 15px;
       border-radius: 20px;
+      min-width: 45px;
+      max-width: 45px;
       color: $font-white;
       background-color: $bg-red;
     }

@@ -1,10 +1,17 @@
 <div class="container" fxLayout="row" fxLayoutAlign="center">
-  <mat-card *ngIf="user" fxFlex="60" fxFlex.lt-md="80">
+  <mat-card
+    *ngIf="user"
+    fxLayoutAlign="center"
+    fxFlex="60"
+    fxFlex.lt-md="80"
+    fxFlex.lt-sm="90"
+  >
     <form
       [formGroup]="form"
       (ngSubmit)="onSubmit()"
       fxLayout="column"
       fxFlexFill
+      fxFlex.lt-sm="90"
     >
       <mat-card-title fxLayout="row" fxLayoutGap="15px">
         <img class="avatar" alt="avatar" src="assets/image/avatar.svg" />

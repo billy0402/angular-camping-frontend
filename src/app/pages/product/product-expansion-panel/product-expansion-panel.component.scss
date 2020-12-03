@@ -29,6 +29,7 @@ mat-expansion-panel {
     .type {
       padding: 5px 15px;
       border-radius: 20px;
+      min-width: 30px;
       background-color: $primary-color;
       color: $font-white;
     }
