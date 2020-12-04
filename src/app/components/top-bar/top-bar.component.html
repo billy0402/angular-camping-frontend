@@ -122,7 +122,7 @@
         matBadgePosition="before"
         matBadgeSize="small"
       >
-        {{ notification.sendDate }}
+        {{ notification.sendDate | date: "yyyy/MM/dd" }}
         {{ notification.content }}
       </span>
     </button>
