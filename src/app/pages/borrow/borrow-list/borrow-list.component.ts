@@ -77,9 +77,19 @@ export class BorrowListComponent implements OnInit {
         return;
       }
 
-      this.rentals = rentals;
+      this.rentals = rentals.map((rental) =>
+        this.updateIsCommentStatus(rental)
+      );
     });
   }
+
+  updateIsCommentStatus = (rental: Rental): Rental => {
+    if (rental.status === BorrowStatus.notComment && rental.isComment) {
+      rental.status = BorrowStatus.alreadyComment;
+    }
+
+    return rental;
+  };
 
   toUserProduct(user: User): void {
     this.router.navigate(['user', user.account, 'product'], {

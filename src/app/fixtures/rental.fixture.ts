@@ -1,8 +1,9 @@
 import { Rental } from '@models/rental/rental.model';
+import { BorrowStatus } from '@enums/borrow-status.enum';
 
 export const rental: Rental = {
   id: 1,
-  status: 4,
+  status: BorrowStatus.notComment,
   productGroupId: 16,
   borrowStartDate: new Date('2020/12/10'),
   borrowEndDate: new Date('2020/12/13'),
@@ -10,6 +11,7 @@ export const rental: Rental = {
   coverImage: 'https://i.imgur.com/Px1JXJW.jpg',
   areaName: '中和區',
   price: 3990,
+  isComment: true,
   user: {
     account: 'test',
     nickName: '煞氣a小明',

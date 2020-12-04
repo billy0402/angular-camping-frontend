@@ -1,6 +1,8 @@
+import { BorrowStatus } from '@enums/borrow-status.enum';
+
 export interface Rental {
   id: number;
-  status: number;
+  status: BorrowStatus;
   productGroupId: number;
   borrowStartDate: Date;
   borrowEndDate: Date;
@@ -11,6 +13,7 @@ export interface Rental {
   rentalDate: Date;
   detailArray: RentalDetail[];
   user: User;
+  isComment: boolean;
 }
 
 export interface RentalDetail {
