@@ -8,8 +8,8 @@
   <h1 class="price">{{ recommendPrice }}</h1>
 
   <mat-form-field appearance="fill">
-    <mat-select [(value)]="selectBrandId" (selectionChange)="getProductTypes()">
-      <mat-option *ngFor="let brand of brands" [value]="brand.id">
+    <mat-select [(value)]="selectBrand" (selectionChange)="getProductTypes()">
+      <mat-option *ngFor="let brand of brands" [value]="brand">
         {{ brand.name }}
       </mat-option>
     </mat-select>
@@ -17,11 +17,8 @@
   </mat-form-field>
 
   <mat-form-field appearance="fill">
-    <mat-select
-      [(value)]="selectTypeId"
-      (selectionChange)="getProductSubTypes()"
-    >
-      <mat-option *ngFor="let type of types" [value]="type.id">
+    <mat-select [(value)]="selectType" (selectionChange)="getProductSubTypes()">
+      <mat-option *ngFor="let type of types" [value]="type">
         {{ type.name }}
       </mat-option>
     </mat-select>
@@ -30,10 +27,10 @@
 
   <mat-form-field appearance="fill">
     <mat-select
-      [(value)]="selectSubTypeId"
+      [(value)]="selectSubType"
       (selectionChange)="getProductRecommendPrice()"
     >
-      <mat-option *ngFor="let subType of subTypes" [value]="subType.id">
+      <mat-option *ngFor="let subType of subTypes" [value]="subType">
         {{ subType.name }}
       </mat-option>
     </mat-select>

@@ -8,6 +8,7 @@ import { SelectType } from '@models/select-type.model';
 import { ProductGroupDetail } from '@models/product/product-group.model';
 import { Product, ProductEdit } from '@models/product/product.model';
 import { City } from '@models/city/city.model';
+import { ProductRecommendPrice } from '@models/product/product-recommend-price.model';
 
 import { ProductService } from '@services/api/product.service';
 import { CityService } from '@services/api/city.service';
@@ -16,6 +17,7 @@ import { DateHelper } from '@utils/date-helper';
 
 import { ImageCropperDialogComponent } from '@components/image-cropper-dialog/image-cropper-dialog.component';
 import { ProductFormDialogComponent } from '@pages/product/product-form-dialog/product-form-dialog.component';
+import { ProductRecommendPriceService } from '@services/product-recommend-price.service';
 
 @Component({
   selector: 'app-product-form',
@@ -30,12 +32,14 @@ export class ProductFormComponent implements OnInit {
   cities: string[] = [];
   areas: City[] = [];
   productTypes: SelectType[] = [];
+  recommendPrices: ProductRecommendPrice[];
   isEdit = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private productService: ProductService,
     private cityService: CityService,
+    private productRecommendPriceService: ProductRecommendPriceService,
     private route: ActivatedRoute,
     private router: Router,
     private dialog: MatDialog
@@ -55,6 +59,7 @@ export class ProductFormComponent implements OnInit {
 
     this.getCities();
     this.getProductTypes();
+    this.getRecommendPrice();
   }
 
   getProductTypes(): void {
@@ -197,5 +202,22 @@ export class ProductFormComponent implements OnInit {
 
       this.router.navigate(['user', 'product']);
     });
+  }
+
+  getRecommendPrice(): void {
+    this.recommendPrices = this.productRecommendPriceService.recommendPrices;
+  }
+
+  getRecommendPriceTotal(): number {
+    return this.productRecommendPriceService.total;
+  }
+
+  removeRecommendPrice(index: number): void {
+    this.productRecommendPriceService.remove(index);
+  }
+
+  clearRecommendPrice(): void {
+    this.productRecommendPriceService.clear();
+    this.getRecommendPrice();
   }
 }

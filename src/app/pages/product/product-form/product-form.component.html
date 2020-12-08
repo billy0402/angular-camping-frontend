@@ -113,6 +113,49 @@
         <mat-error>此欄位為必填</mat-error>
       </mat-form-field>
 
+      <table class="recommend-price" *ngIf="recommendPrices.length > 0">
+        <thead>
+          <tr>
+            <th>品牌</th>
+            <th>類型</th>
+            <th>子類型</th>
+            <th>推薦價格</th>
+            <th>
+              <button
+                mat-button
+                type="button"
+                color="warn"
+                (click)="clearRecommendPrice()"
+              >
+                清空
+              </button>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let recommendPrice of recommendPrices; let index = index">
+            <td>{{ recommendPrice.brand }}</td>
+            <td>{{ recommendPrice.type }}</td>
+            <td>{{ recommendPrice.subType }}</td>
+            <td>{{ recommendPrice.price }}</td>
+            <td>
+              <button
+                mat-icon-button
+                type="button"
+                color="warn"
+                (click)="removeRecommendPrice(index)"
+              >
+                <mat-icon>clear</mat-icon>
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="3"></td>
+            <td class="total">{{ getRecommendPriceTotal() }}</td>
+          </tr>
+        </tbody>
+      </table>
+
       <app-product-expansion-panel
         [products]="products"
         [isEdit]="true"

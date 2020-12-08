@@ -2,6 +2,7 @@
 
 $primary-color: map-get($colors, primary4);
 $icon-color: map-get($colors, primary2);
+$font-black: map-get($colors, black);
 $font-white: map-get($colors, white);
 
 .container {
@@ -52,6 +53,22 @@ mat-card {
   height: 200px;
   margin: 0 auto;
   border: solid 1px $primary-color;
+}
+
+table.recommend-price {
+  text-align: center;
+  color: $font-black;
+  border: solid 1px $primary-color;
+
+  th,
+  td {
+    width: 25%;
+  }
+
+  .total {
+    border-top: solid 1px $primary-color;
+    height: 40px;
+  }
 }
 
 app-product-expansion-panel {
