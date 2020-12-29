@@ -1,195 +1,260 @@
 <div class="container" fxLayout="row" fxLayoutAlign="center">
   <mat-card fxFlex="60" fxFlex.lt-md="80" fxFlex.lt-sm="90">
-    <form
-      [formGroup]="form"
-      (ngSubmit)="onSubmit()"
-      fxLayout="column"
-      fxFlexFill
-      fxLayoutGap="10px"
-    >
-      <img
-        class="cover"
-        alt="cover"
-        [src]="
-          form.value.coverImage
-            ? form.value.coverImage
-            : '/assets/image/empty-image.jpg'
-        "
-      />
-      <div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="20px">
-        <button
-          mat-flat-button
-          type="button"
-          color="primary"
-          (click)="openCoverImageDialog(false)"
-        >
-          新增
-        </button>
-        <button
-          mat-flat-button
-          type="button"
-          color="accent"
-          (click)="openCoverImageDialog(true)"
-        >
-          編輯
-        </button>
-        <button
-          mat-flat-button
-          type="button"
-          color="warn"
-          (click)="deleteCoverImage()"
-        >
-          刪除
-        </button>
-      </div>
+    <mat-horizontal-stepper #stepper>
+      <mat-step label="新增物品">
+        <app-product-expansion-panel
+          *ngIf="products.length > 0; else emptyProducts"
+          [products]="products"
+          [isEdit]="true"
+          (editProduct)="editProduct($event)"
+          (deleteProduct)="deleteProduct($event)"
+        ></app-product-expansion-panel>
+        <ng-template #emptyProducts>
+          <div class="empty-products" fxLayout="row" fxLayoutAlign="center">
+            <h1>沒有任何商品</h1>
+          </div>
+        </ng-template>
 
-      <mat-form-field floatLabel="never">
-        <mat-icon matPrefix>tour</mat-icon>
-        <input matInput type="text" placeholder="標題" formControlName="name" />
-        <mat-error>此欄位為必填</mat-error>
-      </mat-form-field>
+        <div
+          class="buttons"
+          fxLayout="row"
+          fxLayout.lt-sm="column"
+          fxLayoutAlign="space-around"
+          fxLayoutGap.lt-sm="10px"
+        >
+          <button
+            mat-flat-button
+            type="button"
+            color="primary"
+            (click)="openProductDialog()"
+            fxFlex="30"
+            fxFlex.lt-sm="100"
+          >
+            新增物品
+          </button>
+          <button
+            mat-flat-button
+            matStepperNext
+            type="button"
+            color="accent"
+            fxFlex="30"
+            fxFlex.lt-sm="100"
+          >
+            下一步
+          </button>
+        </div>
+      </mat-step>
 
-      <mat-form-field
-        class="date-picker-form-field"
-        floatLabel="never"
-        (click)="picker.opened = true"
-      >
-        <mat-date-range-input [rangePicker]="picker">
-          <input
-            matStartDate
-            formControlName="borrowStartDate"
-            placeholder="開始開放租借"
+      <mat-step [stepControl]="form" label="上架商品">
+        <form
+          [formGroup]="form"
+          (ngSubmit)="onSubmit()"
+          fxLayout="column"
+          fxFlexFill
+          fxLayoutGap="10px"
+        >
+          <img
+            class="cover"
+            alt="cover"
+            [src]="
+              form.value.coverImage
+                ? form.value.coverImage
+                : '/assets/image/empty-image.jpg'
+            "
           />
-          <input
-            matEndDate
-            formControlName="borrowEndDate"
-            placeholder="結束開放租借"
-          />
-        </mat-date-range-input>
-        <mat-datepicker-toggle matPrefix [for]="picker"></mat-datepicker-toggle>
-        <mat-date-range-picker #picker> </mat-date-range-picker>
-        <mat-error>此欄位為必填</mat-error>
-      </mat-form-field>
-
-      <div
-        class="area"
-        fxLayout="row"
-        fxLayout.lt-sm="column"
-        fxLayoutGap.gt-xs="10px"
-      >
-        <mat-form-field floatLabel="never" fxFlex="50" fxFlex.lt-sm="100">
-          <mat-icon matPrefix>gps_fixed</mat-icon>
-          <mat-select formControlName="cityName" placeholder="市">
-            <mat-option
-              *ngFor="let name of cities"
-              [value]="name"
-              (click)="updateAreas()"
+          <div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="20px">
+            <button
+              mat-flat-button
+              type="button"
+              color="primary"
+              (click)="openCoverImageDialog(false)"
             >
-              {{ name }}
-            </mat-option>
-          </mat-select>
-          <mat-error>此欄位為必填</mat-error>
-        </mat-form-field>
+              新增
+            </button>
+            <button
+              mat-flat-button
+              type="button"
+              color="accent"
+              (click)="openCoverImageDialog(true)"
+            >
+              編輯
+            </button>
+            <button
+              mat-flat-button
+              type="button"
+              color="warn"
+              (click)="deleteCoverImage()"
+            >
+              刪除
+            </button>
+          </div>
 
-        <mat-form-field floatLabel="never" fxFlex="50" fxFlex.lt-sm="100">
-          <mat-icon matPrefix>gps_fixed</mat-icon>
-          <mat-select formControlName="cityId" placeholder="區">
-            <mat-option *ngFor="let area of areas" [value]="area.id">
-              {{ area.areaName }}
-            </mat-option>
-          </mat-select>
-          <mat-error>此欄位為必填</mat-error>
-        </mat-form-field>
-      </div>
+          <mat-form-field floatLabel="never">
+            <mat-icon matPrefix>tour</mat-icon>
+            <input
+              matInput
+              type="text"
+              placeholder="標題"
+              formControlName="name"
+            />
+            <mat-error>此欄位為必填</mat-error>
+          </mat-form-field>
 
-      <mat-form-field floatLabel="never">
-        <mat-icon matPrefix>attach_money</mat-icon>
-        <input
-          matInput
-          type="number"
-          placeholder="金額 (以天計算)"
-          formControlName="price"
-        />
-        <mat-error>此欄位為必填</mat-error>
-      </mat-form-field>
+          <mat-form-field
+            class="date-picker-form-field"
+            floatLabel="never"
+            (click)="picker.opened = true"
+          >
+            <mat-date-range-input [rangePicker]="picker">
+              <input
+                matStartDate
+                formControlName="borrowStartDate"
+                placeholder="開始開放租借"
+              />
+              <input
+                matEndDate
+                formControlName="borrowEndDate"
+                placeholder="結束開放租借"
+              />
+            </mat-date-range-input>
+            <mat-datepicker-toggle
+              matPrefix
+              [for]="picker"
+            ></mat-datepicker-toggle>
+            <mat-date-range-picker #picker> </mat-date-range-picker>
+            <mat-error>此欄位為必填</mat-error>
+          </mat-form-field>
 
-      <table class="recommend-price" *ngIf="recommendPrices.length > 0">
-        <thead>
-          <tr>
-            <th>品牌</th>
-            <th>類型</th>
-            <th>子類型</th>
-            <th>推薦價格</th>
-            <th>
-              <button
-                mat-button
-                type="button"
-                color="warn"
-                (click)="clearRecommendPrice()"
+          <div
+            class="area"
+            fxLayout="row"
+            fxLayout.lt-sm="column"
+            fxLayoutGap.gt-xs="10px"
+          >
+            <mat-form-field floatLabel="never" fxFlex="50" fxFlex.lt-sm="100">
+              <mat-icon matPrefix>gps_fixed</mat-icon>
+              <mat-select formControlName="cityName" placeholder="市">
+                <mat-option
+                  *ngFor="let name of cities"
+                  [value]="name"
+                  (click)="updateAreas()"
+                >
+                  {{ name }}
+                </mat-option>
+              </mat-select>
+              <mat-error>此欄位為必填</mat-error>
+            </mat-form-field>
+
+            <mat-form-field floatLabel="never" fxFlex="50" fxFlex.lt-sm="100">
+              <mat-icon matPrefix>gps_fixed</mat-icon>
+              <mat-select formControlName="cityId" placeholder="區">
+                <mat-option *ngFor="let area of areas" [value]="area.id">
+                  {{ area.areaName }}
+                </mat-option>
+              </mat-select>
+              <mat-error>此欄位為必填</mat-error>
+            </mat-form-field>
+          </div>
+
+          <mat-form-field floatLabel="never">
+            <mat-icon matPrefix>attach_money</mat-icon>
+            <input
+              matInput
+              type="number"
+              placeholder="金額 (以天計算)"
+              formControlName="price"
+            />
+            <mat-error>此欄位為必填</mat-error>
+          </mat-form-field>
+
+          <table class="recommend-price" *ngIf="recommendPrices.length > 0">
+            <thead>
+              <tr>
+                <th>品牌</th>
+                <th>類型</th>
+                <th>子類型</th>
+                <th>推薦價格</th>
+                <th>
+                  <button
+                    mat-button
+                    type="button"
+                    color="warn"
+                    (click)="clearRecommendPrice()"
+                  >
+                    清空
+                  </button>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="
+                  let recommendPrice of recommendPrices;
+                  let index = index
+                "
               >
-                清空
-              </button>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let recommendPrice of recommendPrices; let index = index">
-            <td>{{ recommendPrice.brand }}</td>
-            <td>{{ recommendPrice.type }}</td>
-            <td>{{ recommendPrice.subType }}</td>
-            <td>{{ recommendPrice.price }}</td>
-            <td>
-              <button
-                mat-icon-button
-                type="button"
-                color="warn"
-                (click)="removeRecommendPrice(index)"
-              >
-                <mat-icon>clear</mat-icon>
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td colspan="3"></td>
-            <td class="total">{{ getRecommendPriceTotal() }}</td>
-          </tr>
-        </tbody>
-      </table>
+                <td>{{ recommendPrice.brand }}</td>
+                <td>{{ recommendPrice.type }}</td>
+                <td>{{ recommendPrice.subType }}</td>
+                <td>{{ recommendPrice.price }}</td>
+                <td>
+                  <button
+                    mat-icon-button
+                    type="button"
+                    color="warn"
+                    (click)="removeRecommendPrice(index)"
+                  >
+                    <mat-icon>clear</mat-icon>
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="3"></td>
+                <td class="total">{{ getRecommendPriceTotal() }}</td>
+              </tr>
+            </tbody>
+          </table>
 
-      <app-product-expansion-panel
-        [products]="products"
-        [isEdit]="true"
-        (editProduct)="editProduct($event)"
-        (deleteProduct)="deleteProduct($event)"
-      ></app-product-expansion-panel>
-
-      <div
-        fxLayout="row"
-        fxLayout.lt-sm="column"
-        fxLayoutAlign="space-around"
-        fxLayoutGap.lt-sm="10px"
-      >
-        <button
-          mat-flat-button
-          type="button"
-          color="primary"
-          (click)="openProductDialog()"
-          fxFlex="30"
-          fxFlex.lt-sm="100"
-        >
-          新增物品
-        </button>
-        <button
-          mat-flat-button
-          type="submit"
-          color="accent"
-          [disabled]="!form.valid"
-          fxFlex="30"
-          fxFlex.lt-sm="100"
-        >
-          上架
-        </button>
-      </div>
-    </form>
+          <div
+            class="buttons"
+            fxLayout="row"
+            fxLayout.lt-sm="column"
+            fxLayoutAlign="space-around"
+            fxLayoutGap.lt-sm="10px"
+          >
+            <button
+              mat-flat-button
+              matStepperPrevious
+              type="button"
+              color="accent"
+              fxFlex="30"
+              fxFlex.lt-sm="100"
+            >
+              上一步
+            </button>
+            <button
+              mat-flat-button
+              type="submit"
+              color="primary"
+              [disabled]="!form.valid"
+              fxFlex="30"
+              fxFlex.lt-sm="100"
+            >
+              上架
+            </button>
+            <button
+              mat-flat-button
+              type="button"
+              color="warn"
+              (click)="stepper.reset()"
+              fxFlex="30"
+              fxFlex.lt-sm="100"
+            >
+              重置
+            </button>
+          </div>
+        </form>
+      </mat-step>
+    </mat-horizontal-stepper>
   </mat-card>
 </div>

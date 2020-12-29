@@ -20,6 +20,19 @@ mat-card {
   }
 }
 
+.buttons {
+  margin-top: 30px;
+}
+
+app-product-expansion-panel {
+  padding-bottom: 30px;
+}
+
+.empty-products {
+  margin: 10% auto;
+  color: $font-black;
+}
+
 :host ::ng-deep mat-form-field {
   mat-icon {
     margin-right: 10px;
@@ -69,8 +82,4 @@ table.recommend-price {
     border-top: solid 1px $primary-color;
     height: 40px;
   }
-}
-
-app-product-expansion-panel {
-  padding-bottom: 30px;
 }
